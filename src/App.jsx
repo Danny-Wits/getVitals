@@ -11,9 +11,7 @@ function App() {
   const fetchInfo=()=>{
     searchStarted()
     let url = 'https://api.calorieninjas.com/v1/nutrition?query=' + query;
-    let key =process.env.REACT_APP_PK;
-    console.log(key);
-    fetch(url,{method:"GET",headers:{'X-Api-Key':key}})
+    fetch(url,{method:"GET",headers:{'X-Api-Key':process.env.REACT_APP_PK}})
     .then(response=>{searchEnded();return response.json();})
     .then(data=>setData(data))
     .catch(error=>console.log(error));
