@@ -32,7 +32,7 @@ function NutritionCard(props) {
         <div className=" mb-3 bg-orange-300 p-2 rounded-lg">
         <p>MACRO NUTRIENTS</p>
         <div className="mb-3 flex flex-wrap">
-        <Nutrient nutrient="🥖CARBOHYDRATES" value={n['carbohydrates_total_g']} unit={'g'} dsa={DSA.CARBOHYDRATES}/>
+        <Nutrient nutrient="🥖CARBS" value={n['carbohydrates_total_g']} unit={'g'} dsa={DSA.CARBOHYDRATES}/>
         <Nutrient nutrient="💪PROTEIN" value={n['protein_g']} unit={'g'} dsa={DSA.PROTEIN}/>
         <Nutrient nutrient="🧈FATS" value={n['fat_total_g']} unit={'g'} dsa={DSA.FATS.total}/>
         <Nutrient nutrient="🌾FIBER" value={n['fiber_g']} unit={'g'} dsa={DSA.FIBER}/>
