@@ -34,7 +34,7 @@ function App() {
   ,[]);
   return (
     <div className='w-screen h-screen'>
-      <h1 className='m-5 text-center text-3xl'>WHAT'S IN YOUR FOOD </h1>
+      <h1 className='m-5  text-red-900 text-center text-3xl'>WHAT IS IN YOUR FOOD </h1>
       <div className='w-full p-2 flex justify-evenly items-center'>
        <input value={query} onChange={queryChanged} placeholder="WHAT ARE YOU EATING... " className='w-2/3 p-1 bg-red-100 text-slate-600 placeholder:text-sm rounded-md border-red-500 border-2' type="text" />
        <button ref={button} onClick={fetchInfo} className=" ps-2 pe-2 p-1 text-slate-600 bg-red-100 hover:bg-red-300 focus:ring-4 focus:ring-bg-amber-300 font-medium rounded-lg border-2 border-red-500 disabled:bg-red-500">SEARCH🔍</button> 

@@ -5,5 +5,5 @@
   @apply m-0 p-0 box-border  text-wrap uppercase font-mono lg:text-xl md:text-lg text-sm  text-white;
 }
 body {
-  @apply bg-indigo-800;
+  @apply bg-white;
 }
