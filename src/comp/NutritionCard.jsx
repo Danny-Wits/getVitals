@@ -15,7 +15,7 @@ function NutritionCard(props) {
     .catch(error=>console.log(error));
 
   }
-  ,[])
+  ,[props.nutrients['name']])
 
 
   return (
