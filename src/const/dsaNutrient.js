@@ -10,5 +10,5 @@ export const DAILY_NUTRIENT_REQUIREMENTS = {
     },
     FIBER: 38,
     POTASSIUM: 2500,
-    SODIUM: 2300,
+    SODIUM: 2000,
 };
