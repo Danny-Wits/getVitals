@@ -26,6 +26,7 @@ function Data(props) {
           1kg sugar
           <br /> one apple and one orange
           <br /> 100g cake with 10 cookies
+          <br /> 1 Chicken Biryani
         </p>
       </div>
     );
