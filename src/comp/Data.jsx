@@ -39,6 +39,7 @@ function Data(props) {
             nutrients={element}
             add={props.eat}
             delete={props.delete}
+            remove={props.remove}
           />
         );
       })}

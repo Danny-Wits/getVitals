@@ -9,11 +9,15 @@ function App() {
     setQuery(event.target.value);
   };
   const [data, setData] = useState([]);
+
   const button = useRef(null);
+
   const fetchInfo = () => {
     if (query.trim() == "") return;
     searchStarted();
-    let url = "https://api.calorieninjas.com/v1/nutrition?query=" + query;
+    let url =
+      "https://api.calorieninjas.com/v1/nutrition?query=" +
+      query.trim().toLowerCase();
     fetch(url, {
       method: "GET",
       headers: { "X-Api-Key": import.meta.env.VITE_YEK },
@@ -32,20 +36,22 @@ function App() {
   };
   const searchStarted = () => {
     button.current.disabled = true;
-    button.current.innerHTML = "🔍ADDING➕";
+    button.current.innerHTML = "ADDING➕";
   };
   const searchEnded = () => {
     setQuery("");
     button.current.innerHTML = "ADD➕";
     button.current.disabled = false;
   };
-  useEffect(
-    () =>
-      document.addEventListener("keydown", (event) => {
-        if (event.key == "Enter") button.current.click();
-      }),
-    []
-  );
+  const rmFromData = (n) => {
+    setData((prev) => prev.filter((element) => element.name != n.name));
+  };
+
+  const keydown = (event) => {
+    if (event.key == "Enter" && button.current != null) {
+      button.current.click();
+    }
+  };
 
   const [eaten, setEaten] = useState({
     name: "EATEN🍴",
@@ -60,6 +66,7 @@ function App() {
     carbohydrates_total_g: 0,
     fiber_g: 0,
     sugar_g: 0,
+    eaten: [],
   });
 
   const addToEaten = (n) => {
@@ -78,26 +85,33 @@ function App() {
           e.carbohydrates_total_g + n.carbohydrates_total_g,
         fiber_g: e.fiber_g + n.fiber_g,
         sugar_g: e.sugar_g + n.sugar_g,
+        eaten: [n, ...e.eaten],
       };
     });
   };
 
   const delFromEaten = (n) => {
     setEaten((e) => {
+      if (!e.eaten.includes(n)) return e;
+      let multiplier = 0;
+      e.eaten.forEach((element) => {
+        if (element.name == n.name) multiplier++;
+      });
       return {
         name: "EATEN🍴",
-        calories: e.calories - n.calories,
-        serving_size_g: e.serving_size_g - n.serving_size_g,
-        fat_total_g: e.fat_total_g - n.fat_total_g,
-        fat_saturated_g: e.fat_saturated_g - n.fat_saturated_g,
-        protein_g: e.protein_g - n.protein_g,
-        sodium_mg: e.sodium_mg - n.sodium_mg,
-        potassium_mg: e.potassium_mg - n.potassium_mg,
-        cholesterol_mg: e.cholesterol_mg - n.cholesterol_mg,
+        calories: e.calories - n.calories * multiplier,
+        serving_size_g: e.serving_size_g - n.serving_size_g * multiplier,
+        fat_total_g: e.fat_total_g - n.fat_total_g * multiplier,
+        fat_saturated_g: e.fat_saturated_g - n.fat_saturated_g * multiplier,
+        protein_g: e.protein_g - n.protein_g * multiplier,
+        sodium_mg: e.sodium_mg - n.sodium_mg * multiplier,
+        potassium_mg: e.potassium_mg - n.potassium_mg * multiplier,
+        cholesterol_mg: e.cholesterol_mg - n.cholesterol_mg * multiplier,
         carbohydrates_total_g:
-          e.carbohydrates_total_g - n.carbohydrates_total_g,
-        fiber_g: e.fiber_g - n.fiber_g,
-        sugar_g: e.sugar_g - n.sugar_g,
+          e.carbohydrates_total_g - n.carbohydrates_total_g * multiplier,
+        fiber_g: e.fiber_g - n.fiber_g * multiplier,
+        sugar_g: e.sugar_g - n.sugar_g * multiplier,
+        eaten: e.eaten.filter((element) => element != n),
       };
     });
   };
@@ -115,6 +129,7 @@ function App() {
       carbohydrates_total_g: 0,
       fiber_g: 0,
       sugar_g: 0,
+      eaten: [],
     });
   };
   return (
@@ -126,6 +141,7 @@ function App() {
         <div className="w-full p-2 flex justify-evenly items-center">
           <input
             value={query}
+            onKeyDown={keydown}
             onChange={queryChanged}
             placeholder="WHAT ARE YOU EATING... "
             className="w-1/2 p-1 bg-red-100 text-slate-600 placeholder:text-sm rounded-md border-red-500 border-2"
@@ -175,7 +191,12 @@ function App() {
           <Route
             path="/"
             element={
-              <Data data={data} eat={addToEaten} delete={delFromEaten} />
+              <Data
+                data={data}
+                eat={addToEaten}
+                delete={delFromEaten}
+                remove={rmFromData}
+              />
             }
           ></Route>
           <Route

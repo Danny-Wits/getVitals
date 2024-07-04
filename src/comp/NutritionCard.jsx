@@ -5,11 +5,11 @@ function NutritionCard(props) {
   const n = props.nutrients;
   const mealPerDay = 1;
   const [img, setImg] = useState("🍽️");
+
   useEffect(() => {
     let url = `https://emoji-api.com/emojis?search=${n["name"]}&access_key=${
       import.meta.env.VITE_EMOJI
     }`;
-    if (img != "🍽️") return;
     fetch(url, { method: "get" })
       .then((response) => {
         console.log("fetched");
@@ -21,31 +21,42 @@ function NutritionCard(props) {
         } else setImg("🍽️");
       })
       .catch((error) => console.log(error));
-  }, [props.nutrients.map]);
+  }, [props]);
 
   return (
     <div className="m-1 mb-2 border-4 border-dotted border-purple-950 rounded-lg p-3 bg-red-300">
-      <div className="flex p-2 justify-evenly items-end">
-        <p className="mb-4 mr-auto text-2xl font-extrabold text-indigo-950">
-          {n["name"] + img}
-        </p>
-        <button
-          className="focus:bg-lime-400 m-2 p-3 justify-items-end rounded-full bg-yellow-400 border-red-400 border-2"
-          onClick={() => {
-            props.add(n);
-          }}
-        >
-          EAT🍴
-        </button>
-        <button
-          className="focus:bg-red-400 m-2 p-3 justify-items-end rounded-full bg-yellow-400 border-red-400 border-2"
-          onClick={() => {
-            props.delete(n);
-          }}
-        >
-          DELETE❌
-        </button>
-      </div>
+      <p className="p-2 mb-2 mr-auto text-2xl font-semibold text-indigo-950">
+        {n["name"] + img}
+      </p>
+      {props.hasOwnProperty("add") && (
+        <div className="flex justify-left mb-2 items-centre">
+          <button
+            className="focus:bg-lime-400 m-2 p-2 rounded-full bg-yellow-400 border-red-400 border-2"
+            onClick={() => {
+              props.add(n);
+            }}
+          >
+            EAT🍴
+          </button>
+          <button
+            className="focus:bg-orange-400 m-2 p-2 rounded-full bg-yellow-400 border-red-400 border-2"
+            onClick={() => {
+              props.delete(n);
+            }}
+          >
+            UN-EAT❌
+          </button>
+          <button
+            className="m-2 p-2   rounded-full bg-yellow-400 border-red-400 border-2"
+            onClick={() => {
+              props.remove(n);
+            }}
+          >
+            DELETE🗑️
+          </button>
+        </div>
+      )}
+
       <div className=" mb-3 bg-green-500 p-2 rounded-lg">
         <p>ENERGY</p>
         <div className="mb-3 flex flex-wrap">
@@ -94,7 +105,7 @@ function NutritionCard(props) {
         </div>
       </div>
 
-      <div className=" mb-3 bg-slate-mealPerDay00 p-2 rounded-lg">
+      <div className="mb-3 bg-slate-400 p-2 rounded-lg">
         <p>MINERALS</p>
         <div className="mb-3 flex flex-wrap">
           <Nutrient
