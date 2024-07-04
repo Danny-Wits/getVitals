@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import NutritionCard from "./NutritionCard";
 
-
 function Data(props) {
-  if (props.data.length==0) {
+  if (props.data.length == 0) {
     return (
-      <div className=" flex flex-col items-center m-2 p-3 bg-red-100 border-red-400 border-2">
+      <div className=" flex flex-col items-center mx-2 p-3 bg-red-400 border-red-400 border-2">
         <h2 className="text-black">INTRO</h2>
         <br />
         <p className="text-slate-600">
@@ -32,10 +31,16 @@ function Data(props) {
     );
   }
   return (
-  
-    <div className="m-1 p-1 bg-red-500">
+    <div className="mx-2 p-2 bg-red-400 shadow-xl shadow-red-500">
       {props.data.map((element, key) => {
-        return <NutritionCard key={key} nutrients={element} add={props.eat} delete={props.delete} />;
+        return (
+          <NutritionCard
+            key={key}
+            nutrients={element}
+            add={props.eat}
+            delete={props.delete}
+          />
+        );
       })}
     </div>
   );

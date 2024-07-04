@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Data from "./comp/Data";
 import Eaten from "./comp/Eaten";
+import { NavLink, Route, Routes } from "react-router-dom";
 
 function App() {
   const [query, setQuery] = useState("");
@@ -118,34 +119,74 @@ function App() {
   };
   return (
     <div className="w-screen h-screen">
-      <h1 className="m-5  text-red-900 text-center text-3xl">
-        WHAT IS IN YOUR FOOD{" "}
-      </h1>
-      <div className="w-full p-2 flex justify-evenly items-center">
-        <input
-          value={query}
-          onChange={queryChanged}
-          placeholder="WHAT ARE YOU EATING... "
-          className="w-1/2 p-1 bg-red-100 text-slate-600 placeholder:text-sm rounded-md border-red-500 border-2"
-          type="text"
-        />
-        <button
-          ref={button}
-          onClick={fetchInfo}
-          className=" ps-2 pe-2 p-1 text-slate-600 bg-red-100 hover:bg-red-300 focus:ring-4 focus:ring-bg-amber-300 font-medium rounded-lg border-2 border-red-500 disabled:bg-red-500"
-        >
-          ADD➕
-        </button>
-        <button
-          onClick={() => setData([])}
-          className=" ps-2 pe-2 p-1 text-slate-600 bg-red-100 hover:bg-red-300 focus:ring-4 focus:ring-bg-amber-300 font-medium rounded-lg border-2 border-red-500 disabled:bg-red-500"
-        >
-          CLEAR🧼
-        </button>
+      <div className="bg-slate-100 p-2 shadow-xl rounded-md mb-3 mx-3">
+        <h1 className="m-5  text-red-900 text-center text-3xl">
+          WHAT IS IN YOUR FOOD{" "}
+        </h1>
+        <div className="w-full p-2 flex justify-evenly items-center">
+          <input
+            value={query}
+            onChange={queryChanged}
+            placeholder="WHAT ARE YOU EATING... "
+            className="w-1/2 p-1 bg-red-100 text-slate-600 placeholder:text-sm rounded-md border-red-500 border-2"
+            type="text"
+          />
+          <button
+            ref={button}
+            onClick={fetchInfo}
+            className=" ps-2 pe-2 p-1 text-slate-600 bg-red-100 hover:bg-red-300 focus:ring-4 focus:ring-bg-amber-300 font-medium rounded-lg border-2 border-red-500 disabled:bg-red-500"
+          >
+            ADD➕
+          </button>
+          <button
+            onClick={() => setData([])}
+            className=" ps-2 pe-2 p-1 text-slate-600 bg-red-100 hover:bg-red-300 focus:ring-4 focus:ring-bg-amber-300 font-medium rounded-lg border-2 border-red-500 disabled:bg-red-500"
+          >
+            CLEAR🧼
+          </button>
+        </div>
       </div>
+
+      <div className="flex justify-around px-2 pt-2">
+        <NavLink
+          className={({ isActive }) =>
+            isActive
+              ? "px-2 pt-2 bg-red-400 rounded-t-lg"
+              : "m-1 p-2 border-2 border-red-800 rounded-lg bg-red-300 hover:bg-red-500 hover:text-white"
+          }
+          to={"/"}
+        >
+          ADD MORE FOOD
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive
+              ? "px-2 pt-2 bg-green-400 rounded-t-lg"
+              : "m-1 p-2 border-2 border-green-800 rounded-lg bg-green-300 hover:bg-green-500 hover:text-white"
+          }
+          to={"/eaten"}
+        >
+          WHAT YOU ATE
+        </NavLink>
+      </div>
+
       <div>
-        <Data data={data} eat={addToEaten} delete={delFromEaten} />
-        <Eaten key={-1} nutrients={eaten} reset={eatenReset} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Data data={data} eat={addToEaten} delete={delFromEaten} />
+            }
+          ></Route>
+          <Route
+            path="/eaten"
+            element={
+              <div className="mx-2 p-2 bg-green-400 shadow-xl shadow-green-500">
+                <Eaten key={-1} nutrients={eaten} reset={eatenReset} />
+              </div>
+            }
+          ></Route>
+        </Routes>
       </div>
     </div>
   );
