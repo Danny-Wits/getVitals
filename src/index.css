@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 * {
-  @apply m-0 p-0 box-border  text-wrap uppercase font-mono lg:text-lg md:text-base sm:text-sm text-sm text-white;
+  @apply m-0 p-0 box-border  text-wrap uppercase font-mono lg:text-lg md:text-base sm:text-sm text-sm text-black;
 }
 body {
   @apply bg-white;
+}
+
+.nutrient-group {
+  @apply my-3 shadow-md shadow-black p-2 rounded-lg border-2;
 }

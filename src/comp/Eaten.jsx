@@ -6,27 +6,28 @@ function Eaten(props) {
   const n = props.nutrients;
   return (
     <>
-      <div className="mx-1 border-4 border-purple-950 rounded-lg p-3 bg-green-300">
+      <div className="border-4 rounded-lg p-3 shadow-lg shadow-black">
         <div className="flex p-2 justify-evenly items-end">
           <p className="mb-4 mr-auto text-2xl font-extrabold text-indigo-950">
             {n["name"]}
           </p>
           <button
-            className="focus:bg-red-400 m-2 p-3 justify-items-end rounded-full bg-lime-400 border-white border-2"
+            className="m-2 p-2 font-bold rounded-xl min-w-20 border-gray-500 border-2 hover:scale-105 focus:scale-105"
             onClick={props.save}
           >
             SAVE🍪
           </button>
           <button
-            className="focus:bg-red-400 m-2 p-3 justify-items-end rounded-full bg-lime-400 border-white border-2"
+            className="m-2 p-2 font-bold rounded-xl min-w-20 border-gray-500 border-2 hover:scale-105 focus:scale-105 "
             onClick={props.reset}
           >
             RESET🪥
           </button>
         </div>
         <div></div>
-        <div className=" mb-3 bg-green-500 p-2 rounded-lg">
-          <p>ENERGY</p>
+
+        <div className="nutrient-group">
+          <p className="m-2 font-bold text-lg">ENERGY</p>
           <div className="mb-3 flex flex-wrap">
             <Nutrient
               nutrient="🔥CALORIES"
@@ -43,8 +44,8 @@ function Eaten(props) {
           </div>
         </div>
 
-        <div className=" mb-3 bg-orange-300 p-2 rounded-lg">
-          <p>MACRO NUTRIENTS</p>
+        <div className="nutrient-group">
+          <p className="m-2 font-bold text-lg">MACRO NUTRIENTS</p>
           <div className="mb-3 flex flex-wrap">
             <Nutrient
               nutrient="🥖CARBS"
@@ -73,8 +74,8 @@ function Eaten(props) {
           </div>
         </div>
 
-        <div className=" mb-3 bg-slate-400 p-2 rounded-lg">
-          <p>MINERALS</p>
+        <div className="nutrient-group">
+          <p className="m-2 font-bold text-lg">MINERALS</p>
           <div className="mb-3 flex flex-wrap">
             <Nutrient
               nutrient="🍌POTASSIUM"
@@ -91,8 +92,8 @@ function Eaten(props) {
           </div>
         </div>
 
-        <div className=" mb-3 bg-amber-600 p-2 rounded-lg">
-          <p>FATS</p>
+        <div className="nutrient-group">
+          <p className="m-2 font-bold text-lg">FATS</p>
           <div className="mb-3 flex flex-wrap">
             <Nutrient
               nutrient="💯TOTAL"
@@ -115,11 +116,12 @@ function Eaten(props) {
           </div>
         </div>
       </div>
-      <div className="mt-2 p-1 bg-green-400 shadow-xl shadow-green-500">
+      <div className="mt-2 p-1 ">
         {n.eaten.map((element, key) => {
           return (
             <NutritionCard
               key={key}
+              small={true}
               nutrients={element}
               delete={props.delete}
             />

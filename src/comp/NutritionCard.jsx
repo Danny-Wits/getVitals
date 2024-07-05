@@ -24,14 +24,14 @@ function NutritionCard(props) {
   }, [props]);
 
   return (
-    <div className="m-1 mb-2 border-4 border-dotted border-purple-950 rounded-lg p-3 bg-red-300">
+    <div className="mx-1 my-4 border-4 rounded-lg p-3 shadow-lg shadow-black">
       <p className="p-2 mb-2 mr-auto text-2xl font-semibold text-indigo-950">
         {n["name"] + img}
       </p>
       <div className="flex justify-left mb-2 items-centre">
         {props.hasOwnProperty("add") && (
           <button
-            className="focus:bg-lime-400 m-2 p-2 rounded-full bg-yellow-400 border-red-400 border-2"
+            className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
             onClick={() => {
               props.add(n);
             }}
@@ -41,7 +41,7 @@ function NutritionCard(props) {
         )}
         {props.hasOwnProperty("delete") && (
           <button
-            className="focus:bg-orange-400 m-2 p-2 rounded-full bg-yellow-400 border-red-400 border-2"
+            className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
             onClick={() => {
               props.delete(n);
             }}
@@ -51,7 +51,7 @@ function NutritionCard(props) {
         )}
         {props.hasOwnProperty("remove") && (
           <button
-            className="m-2 p-2   rounded-full bg-yellow-400 border-red-400 border-2"
+            className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
             onClick={() => {
               props.remove(n);
             }}
@@ -61,8 +61,8 @@ function NutritionCard(props) {
         )}
       </div>
 
-      <div className=" mb-3 bg-green-500 p-2 rounded-lg">
-        <p>ENERGY</p>
+      <div className="nutrient-group">
+        <p className="m-2 font-bold text-lg">ENERGY</p>
         <div className="mb-3 flex flex-wrap">
           <Nutrient
             nutrient="🔥CALORIES"
@@ -78,8 +78,8 @@ function NutritionCard(props) {
           />
         </div>
       </div>
-      <div className=" mb-3 bg-orange-300 p-2 rounded-lg">
-        <p>MACRO NUTRIENTS</p>
+      <div className="nutrient-group">
+        <p className="m-2 font-bold text-lg">MACRO NUTRIENTS</p>
         <div className="mb-3 flex flex-wrap">
           <Nutrient
             nutrient="🥖CARBS"
@@ -107,8 +107,8 @@ function NutritionCard(props) {
           />
         </div>
       </div>
-      <div className="mb-3 bg-slate-400 p-2 rounded-lg">
-        <p>MINERALS</p>
+      <div className="nutrient-group">
+        <p className="m-2 font-bold text-lg">MINERALS</p>
         <div className="mb-3 flex flex-wrap">
           <Nutrient
             nutrient="🍌POTASSIUM"
@@ -124,8 +124,8 @@ function NutritionCard(props) {
           />
         </div>
       </div>
-      <div className=" mb-3 bg-amber-600 p-2 rounded-lg">
-        <p>FATS</p>
+      <div className="nutrient-group">
+        <p className="m-2 font-bold text-lg">FATS</p>
         <div className="mb-3 flex flex-wrap">
           <Nutrient
             nutrient="💯TOTAL"

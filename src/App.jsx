@@ -13,6 +13,7 @@ function App() {
 
   const button = useRef(null);
   const eatenTab = useRef(null);
+  const eatTab = useRef(null);
 
   const fetchInfo = () => {
     if (query.trim() == "") return;
@@ -38,15 +39,19 @@ function App() {
   };
   const searchStarted = () => {
     button.current.disabled = true;
-    button.current.innerHTML = "ADDING➕";
+    button.current.innerHTML = "Searching";
   };
   const searchEnded = () => {
     setQuery("");
-    button.current.innerHTML = "ADD➕";
+    button.current.innerHTML = "Search";
     button.current.disabled = false;
+    eatTab.current.click();
   };
   const rmFromData = (n) => {
     setData((prev) => prev.filter((element) => element != n));
+  };
+  const resetData = () => {
+    setData([]);
   };
 
   const keydown = (event) => {
@@ -136,7 +141,7 @@ function App() {
 
   const save = () => {
     let flag = confirm(
-      "DO YOU WANT TO USE BROWSER COOKIES🍪 TO STORE YOUR MEALS ??? "
+      "DO YOU WANT TO USE BROWSER ES🍪 TO STORE YOUR MEALS ??? "
     );
     if (flag) {
       Cookies.set("_eaten_", JSON.stringify(eaten), { expires: 1 });
@@ -149,7 +154,7 @@ function App() {
     let loadedData = Cookies.get("_eaten_");
     if (loadedData == undefined) {
       alert(
-        "NO SAVED 🍪COOKIE🍪 FOUND IN THIS BROWSER ...\nTRY THESE FIXES: \n1.PLEASE USE THE BROWSER YOU USED TO SAVE YOUR MEALS\n2.SAVE MEALS IN 'WHAT HAVE YOU EATEN TAB' "
+        "NO SAVED 🍪COOKIE🍪 FOUND IN THIS BROWSER ...\nTRY THESE FIXES: \n1.PLEASE USE THE BROWSER YOU USED TO SAVE YOUR MEALS\n2.SAVE MEALS IN 'WHAT YOU ATE TAB' "
       );
       return;
     }
@@ -159,32 +164,28 @@ function App() {
   };
   return (
     <div className="w-screen h-screen">
-      <div className="bg-slate-100 p-2 shadow-xl rounded-md mb-3 mx-3">
-        <h1 className="m-5  text-red-900 text-center text-3xl">
-          WHAT IS IN YOUR FOOD
+      <div className="bg-slate-100 p-2 shadow-lg rounded-md mb-3 mx-3">
+        <h1 className="m-4 sm:text-3xl text-2xl font-thin text-center">
+          WHAT IS IN YOUR FOOD🍟
         </h1>
-        <div className="w-full p-2 flex justify-evenly items-center">
-          <input
-            value={query}
-            onKeyDown={keydown}
-            onChange={queryChanged}
-            placeholder="WHAT ARE YOU EATING... "
-            className="w-1/2 p-1 bg-red-100 text-slate-600 placeholder:text-sm rounded-md border-red-500 border-2"
-            type="text"
-          />
-          <button
-            ref={button}
-            onClick={fetchInfo}
-            className=" ps-2 pe-2 p-1 text-slate-600 bg-red-100 hover:bg-red-300 focus:ring-4 focus:ring-bg-amber-300 font-medium rounded-lg border-2 border-red-500 disabled:bg-red-500"
-          >
-            ADD➕
-          </button>
-          <button
-            onClick={() => setData([])}
-            className=" ps-2 pe-2 p-1 text-slate-600 bg-red-100 hover:bg-red-300 focus:ring-4 focus:ring-bg-amber-300 font-medium rounded-lg border-2 border-red-500 disabled:bg-red-500"
-          >
-            CLEAR🧼
-          </button>
+        <div className=" w-full p-2 flex justify-evenly items-center">
+          <div className="border-2 p-2 bg-white shadow-md shadow-black rounded-md">
+            <input
+              value={query}
+              onKeyDown={keydown}
+              onChange={queryChanged}
+              placeholder="WHAT ARE YOU EATING... "
+              className="bg-white p-3 m-0 font-semibold"
+              type="text"
+            />
+            <button
+              ref={button}
+              onClick={fetchInfo}
+              className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
+            >
+              Search
+            </button>
+          </div>
         </div>
       </div>
 
@@ -192,18 +193,19 @@ function App() {
         <NavLink
           className={({ isActive }) =>
             isActive
-              ? "px-2 pt-2 bg-red-400 rounded-t-lg "
-              : "m-1 p-2 border-2 border-red-800 rounded-lg  bg-red-300 hover:bg-red-500"
+              ? "px-2 pt-2 bg-black rounded-t-lg text-white"
+              : "m-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
           }
           to={"/"}
+          ref={eatTab}
         >
           EAT MORE FOOD
         </NavLink>
         <NavLink
           className={({ isActive }) =>
             isActive
-              ? "px-2 pt-2 bg-green-400 rounded-t-lg"
-              : "m-1 p-2 border-2 border-green-800 rounded-lg bg-green-300 hover:bg-green-500"
+              ? "px-2 pt-2 bg-black rounded-t-lg text-white"
+              : "m-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
           }
           to={"/eaten"}
           ref={eatenTab}
@@ -217,19 +219,22 @@ function App() {
           <Route
             path="/"
             element={
-              <Data
-                data={data}
-                eat={addToEaten}
-                delete={delFromEaten}
-                remove={rmFromData}
-                load={load}
-              />
+              <div className="mx-3 border-gray-400 rounded-lg border-2">
+                <Data
+                  data={data}
+                  eat={addToEaten}
+                  delete={delFromEaten}
+                  remove={rmFromData}
+                  load={load}
+                  reset={resetData}
+                />
+              </div>
             }
           ></Route>
           <Route
             path="/eaten"
             element={
-              <div className="mx-2 p-2 bg-green-400 shadow-xl shadow-green-500">
+              <div className="mx-3 border-gray-400 rounded-lg border-2">
                 <Eaten
                   key={-1}
                   nutrients={eaten}

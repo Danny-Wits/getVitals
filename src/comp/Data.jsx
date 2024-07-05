@@ -4,10 +4,10 @@ import NutritionCard from "./NutritionCard";
 function Data(props) {
   if (props.data.length == 0) {
     return (
-      <div className=" flex flex-col items-center mx-2 p-3 bg-red-400 border-red-400 border-2">
+      <div className="border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col">
         <h2 className="text-black">INTRO</h2>
         <br />
-        <p className="text-slate-600">
+        <p className="text-slate-600 text-justify">
           Hey there 👋, food explorers! Ready to unlock the secrets of your
           snacks and meals? Here, you can become a nutrition superhero! Our
           awesome tool tells you everything you need to know about the nutrients
@@ -30,7 +30,7 @@ function Data(props) {
         </p>
         <br />
         <button
-          className="focus:bg-red-400 m-2 p-3 justify-items-end rounded-xl bg-lime-400 border-white border-2"
+          className="m-2 p-3  rounded-xl border-black-400 border-2"
           onClick={props.load}
         >
           LOAD Previous MEALS ⚙️
@@ -41,7 +41,16 @@ function Data(props) {
     );
   }
   return (
-    <div className="mx-2 p-2 bg-red-400 shadow-xl shadow-red-500">
+    <div className="border-4 rounded-lg p-2 shadow-lg shadow-black">
+      <div className="w-full flex justify-start">
+        <span className="m-2 p-2 text-xl ">SEARCH RESULTS</span>
+        <button
+          onClick={props.reset}
+          className="rounded-xl ml-auto mr-2 p-2 my-2 text-white bg-black min-w-20 focus:scale-105 shadow-md shadow-black"
+        >
+          Clear❌
+        </button>
+      </div>
       {props.data.map((element, key) => {
         return (
           <NutritionCard
