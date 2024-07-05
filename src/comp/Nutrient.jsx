@@ -11,7 +11,7 @@ function Nutrient(props) {
   else if (currentP >= 100 && currentP <= 150) color = "bg-lime-400";
   else if (currentP > 150) color = "bg-sky-400";
   return (
-    <span className="my-3 mx-1 flex flex-row flex-wrap">
+    <span className="my-3 mx-1 flex flex-row flex-wrap scale-95 sm:scale-100 ">
       <span className="p-2 rounded-s-lg border-2 border-black bg-black">
         {props.nutrient}
       </span>

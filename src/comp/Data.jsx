@@ -28,6 +28,15 @@ function Data(props) {
           <br /> 100g cake with 10 cookies
           <br /> 1 Chicken Biryani
         </p>
+        <br />
+        <button
+          className="focus:bg-red-400 m-2 p-3 justify-items-end rounded-xl bg-lime-400 border-white border-2"
+          onClick={props.load}
+        >
+          LOAD Previous MEALS ⚙️
+          <br />
+          <small className="font-thin">only use if visited before</small>
+        </button>
       </div>
     );
   }
@@ -39,7 +48,6 @@ function Data(props) {
             key={key}
             nutrients={element}
             add={props.eat}
-            delete={props.delete}
             remove={props.remove}
           />
         );

@@ -28,8 +28,8 @@ function NutritionCard(props) {
       <p className="p-2 mb-2 mr-auto text-2xl font-semibold text-indigo-950">
         {n["name"] + img}
       </p>
-      {props.hasOwnProperty("add") && (
-        <div className="flex justify-left mb-2 items-centre">
+      <div className="flex justify-left mb-2 items-centre">
+        {props.hasOwnProperty("add") && (
           <button
             className="focus:bg-lime-400 m-2 p-2 rounded-full bg-yellow-400 border-red-400 border-2"
             onClick={() => {
@@ -38,6 +38,8 @@ function NutritionCard(props) {
           >
             EAT🍴
           </button>
+        )}
+        {props.hasOwnProperty("delete") && (
           <button
             className="focus:bg-orange-400 m-2 p-2 rounded-full bg-yellow-400 border-red-400 border-2"
             onClick={() => {
@@ -46,6 +48,8 @@ function NutritionCard(props) {
           >
             UN-EAT❌
           </button>
+        )}
+        {props.hasOwnProperty("remove") && (
           <button
             className="m-2 p-2   rounded-full bg-yellow-400 border-red-400 border-2"
             onClick={() => {
@@ -54,8 +58,8 @@ function NutritionCard(props) {
           >
             DELETE🗑️
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className=" mb-3 bg-green-500 p-2 rounded-lg">
         <p>ENERGY</p>
@@ -63,7 +67,7 @@ function NutritionCard(props) {
           <Nutrient
             nutrient="🔥CALORIES"
             value={n["calories"]}
-            unit={"KCAL"}
+            unit={"KC"}
             dsa={DSA.CALORIES / mealPerDay}
           />
           <Nutrient
@@ -74,7 +78,6 @@ function NutritionCard(props) {
           />
         </div>
       </div>
-
       <div className=" mb-3 bg-orange-300 p-2 rounded-lg">
         <p>MACRO NUTRIENTS</p>
         <div className="mb-3 flex flex-wrap">
@@ -104,7 +107,6 @@ function NutritionCard(props) {
           />
         </div>
       </div>
-
       <div className="mb-3 bg-slate-400 p-2 rounded-lg">
         <p>MINERALS</p>
         <div className="mb-3 flex flex-wrap">
@@ -122,7 +124,6 @@ function NutritionCard(props) {
           />
         </div>
       </div>
-
       <div className=" mb-3 bg-amber-600 p-2 rounded-lg">
         <p>FATS</p>
         <div className="mb-3 flex flex-wrap">

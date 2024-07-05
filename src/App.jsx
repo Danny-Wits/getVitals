@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Data from "./comp/Data";
 import Eaten from "./comp/Eaten";
 import { NavLink, Route, Routes } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function App() {
   const [query, setQuery] = useState("");
@@ -11,6 +12,7 @@ function App() {
   const [data, setData] = useState([]);
 
   const button = useRef(null);
+  const eatenTab = useRef(null);
 
   const fetchInfo = () => {
     if (query.trim() == "") return;
@@ -44,7 +46,7 @@ function App() {
     button.current.disabled = false;
   };
   const rmFromData = (n) => {
-    setData((prev) => prev.filter((element) => element.name != n.name));
+    setData((prev) => prev.filter((element) => element != n));
   };
 
   const keydown = (event) => {
@@ -71,6 +73,8 @@ function App() {
 
   const addToEaten = (n) => {
     setEaten((e) => {
+      eatenTab.current.className =
+        "m-1 p-2 border-2 border-green-800 rounded-lg bg-green-300 hover:bg-green-500 after:content-['👇']";
       return {
         name: "EATEN🍴",
         calories: e.calories + n.calories,
@@ -88,15 +92,12 @@ function App() {
         eaten: [n, ...e.eaten],
       };
     });
+    rmFromData(n);
   };
 
   const delFromEaten = (n) => {
     setEaten((e) => {
-      if (!e.eaten.includes(n)) return e;
-      let multiplier = 0;
-      e.eaten.forEach((element) => {
-        if (element.name == n.name) multiplier++;
-      });
+      let multiplier = 1;
       return {
         name: "EATEN🍴",
         calories: e.calories - n.calories * multiplier,
@@ -132,11 +133,35 @@ function App() {
       eaten: [],
     });
   };
+
+  const save = () => {
+    let flag = confirm(
+      "DO YOU WANT TO USE BROWSER COOKIES🍪 TO STORE YOUR MEALS ??? "
+    );
+    if (flag) {
+      Cookies.set("_eaten_", JSON.stringify(eaten), { expires: 1 });
+      alert("SUCCESSFULLY STORED 👍👍👍");
+    } else {
+      alert("OK😭😭😭");
+    }
+  };
+  const load = () => {
+    let loadedData = Cookies.get("_eaten_");
+    if (loadedData == undefined) {
+      alert(
+        "NO SAVED 🍪COOKIE🍪 FOUND IN THIS BROWSER ...\nTRY THESE FIXES: \n1.PLEASE USE THE BROWSER YOU USED TO SAVE YOUR MEALS\n2.SAVE MEALS IN 'WHAT HAVE YOU EATEN TAB' "
+      );
+      return;
+    }
+    setEaten(JSON.parse(loadedData));
+    alert("Meals Loaded Successfully");
+    eatenTab.current.click();
+  };
   return (
     <div className="w-screen h-screen">
       <div className="bg-slate-100 p-2 shadow-xl rounded-md mb-3 mx-3">
         <h1 className="m-5  text-red-900 text-center text-3xl">
-          WHAT IS IN YOUR FOOD{" "}
+          WHAT IS IN YOUR FOOD
         </h1>
         <div className="w-full p-2 flex justify-evenly items-center">
           <input
@@ -167,20 +192,21 @@ function App() {
         <NavLink
           className={({ isActive }) =>
             isActive
-              ? "px-2 pt-2 bg-red-400 rounded-t-lg"
-              : "m-1 p-2 border-2 border-red-800 rounded-lg bg-red-300 hover:bg-red-500 hover:text-white"
+              ? "px-2 pt-2 bg-red-400 rounded-t-lg "
+              : "m-1 p-2 border-2 border-red-800 rounded-lg  bg-red-300 hover:bg-red-500"
           }
           to={"/"}
         >
-          ADD MORE FOOD
+          EAT MORE FOOD
         </NavLink>
         <NavLink
           className={({ isActive }) =>
             isActive
               ? "px-2 pt-2 bg-green-400 rounded-t-lg"
-              : "m-1 p-2 border-2 border-green-800 rounded-lg bg-green-300 hover:bg-green-500 hover:text-white"
+              : "m-1 p-2 border-2 border-green-800 rounded-lg bg-green-300 hover:bg-green-500"
           }
           to={"/eaten"}
+          ref={eatenTab}
         >
           WHAT YOU ATE
         </NavLink>
@@ -196,6 +222,7 @@ function App() {
                 eat={addToEaten}
                 delete={delFromEaten}
                 remove={rmFromData}
+                load={load}
               />
             }
           ></Route>
@@ -203,7 +230,13 @@ function App() {
             path="/eaten"
             element={
               <div className="mx-2 p-2 bg-green-400 shadow-xl shadow-green-500">
-                <Eaten key={-1} nutrients={eaten} reset={eatenReset} />
+                <Eaten
+                  key={-1}
+                  nutrients={eaten}
+                  reset={eatenReset}
+                  delete={delFromEaten}
+                  save={save}
+                />
               </div>
             }
           ></Route>

@@ -13,6 +13,12 @@ function Eaten(props) {
           </p>
           <button
             className="focus:bg-red-400 m-2 p-3 justify-items-end rounded-full bg-lime-400 border-white border-2"
+            onClick={props.save}
+          >
+            SAVE🍪
+          </button>
+          <button
+            className="focus:bg-red-400 m-2 p-3 justify-items-end rounded-full bg-lime-400 border-white border-2"
             onClick={props.reset}
           >
             RESET🪥
@@ -25,7 +31,7 @@ function Eaten(props) {
             <Nutrient
               nutrient="🔥CALORIES"
               value={n["calories"]}
-              unit={"KCAL"}
+              unit={"KC"}
               dsa={DSA.CALORIES}
             />
             <Nutrient
@@ -109,9 +115,15 @@ function Eaten(props) {
           </div>
         </div>
       </div>
-      <div className="mx-2 p-2 bg-green-400 shadow-xl shadow-green-500">
+      <div className="mt-2 p-1 bg-green-400 shadow-xl shadow-green-500">
         {n.eaten.map((element, key) => {
-          return <NutritionCard key={key} nutrients={element} />;
+          return (
+            <NutritionCard
+              key={key}
+              nutrients={element}
+              delete={props.delete}
+            />
+          );
         })}
       </div>
     </>
