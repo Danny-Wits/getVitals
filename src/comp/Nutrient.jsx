@@ -4,11 +4,11 @@ function Nutrient(props) {
   let remaining = props.dsa - props.value;
   if (remaining < 0) remaining = 0;
   let currentP = (props.value * 100) / props.dsa;
-  let color = "✅";
-  if (currentP <= 1) color = "🟥";
-  else if (currentP <= 25) color = "🟧";
-  else if (currentP <= 70) color = "🟨";
-  else if (currentP >= 100 && currentP <= 150) color = "🟦";
+  let color = "🟢";
+  if (currentP <= 1) color = "🔴";
+  else if (currentP <= 25) color = "🟠";
+  else if (currentP <= 70) color = "🟡";
+  else if (currentP >= 100 && currentP <= 150) color = "🔵";
   else if (currentP > 150) color = "💀";
   return (
     <span className="my-2 sm:m-2 rounded-s-lg  rounded-e-lg flex flex-row flex-wrap">

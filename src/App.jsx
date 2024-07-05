@@ -79,7 +79,7 @@ function App() {
   const addToEaten = (n) => {
     setEaten((e) => {
       eatenTab.current.className =
-        "m-1 p-2 border-2 border-green-800 rounded-lg bg-green-300 hover:bg-green-500 after:content-['👇']";
+        "m-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black after:content-['👇']";
       return {
         name: "EATEN🍴",
         calories: e.calories + n.calories,
@@ -164,7 +164,7 @@ function App() {
   };
   return (
     <div className="w-screen h-screen">
-      <div className="bg-slate-100 p-2 shadow-lg rounded-md mb-3 mx-3">
+      <div className="bg-slate-100 p-2 shadow-xl rounded-md mb-3 mx-3">
         <h1 className="m-4 sm:text-3xl text-2xl font-thin text-center">
           WHAT IS IN YOUR FOOD🍟
         </h1>
