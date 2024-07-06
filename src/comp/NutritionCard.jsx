@@ -4,29 +4,85 @@ import { DAILY_NUTRIENT_REQUIREMENTS as DSA } from "../const/dsaNutrient";
 function NutritionCard(props) {
   const n = props.nutrients;
   const mealPerDay = 1;
-  const [img, setImg] = useState("🍽️");
-
+  const [loaded, setIconLoaded] = useState(false);
+  const [small, setSmall] = useState(props.small);
   useEffect(() => {
     let url = `https://emoji-api.com/emojis?search=${n["name"]}&access_key=${
       import.meta.env.VITE_EMOJI
     }`;
-    fetch(url, { method: "get" })
-      .then((response) => {
-        console.log("fetched");
-        return response.json();
-      })
-      .then((data) => {
-        if (data.hasOwnProperty("0")) {
-          setImg(data["0"].character);
-        } else setImg("🍽️");
-      })
-      .catch((error) => console.log(error));
-  }, [props]);
-
+    if (n.icon == "🍽️" && !loaded) {
+      fetch(url, { method: "get" })
+        .then((response) => {
+          console.log("fetched");
+          return response.json();
+        })
+        .then((data) => {
+          if (data.hasOwnProperty("0")) {
+            n.icon = data["0"].character;
+            setIconLoaded(true);
+          } else {
+            n.icon = "";
+            setIconLoaded(true);
+          }
+        })
+        .catch((error) => console.log(error));
+    }
+  }, []);
+  if (small) {
+    return (
+      <div className="mx-1 my-4 border-4 rounded-lg p-3 shadow-lg shadow-black">
+        <p className="p-2 mb-2 mr-auto text-2xl font-semibold text-indigo-950">
+          {n.name}
+          {n.icon}
+        </p>
+        <div className="flex justify-left mb-2 items-centre">
+          {props.hasOwnProperty("add") && (
+            <button
+              className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
+              onClick={() => {
+                props.add(n);
+              }}
+            >
+              EAT🍴
+            </button>
+          )}
+          {props.hasOwnProperty("delete") && (
+            <button
+              className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
+              onClick={() => {
+                props.delete(n);
+              }}
+            >
+              UN-EAT❌
+            </button>
+          )}
+          {props.hasOwnProperty("remove") && (
+            <button
+              className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
+              onClick={() => {
+                props.remove(n);
+              }}
+            >
+              DELETE🗑️
+            </button>
+          )}
+          {small && (
+            <button
+              className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
+              onClick={() => setSmall(false)}
+            >
+              DETAIL📃
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="mx-1 my-4 border-4 rounded-lg p-3 shadow-lg shadow-black">
       <p className="p-2 mb-2 mr-auto text-2xl font-semibold text-indigo-950">
-        {n["name"] + img}
+        {n.name}
+        {n.icon}
       </p>
       <div className="flex justify-left mb-2 items-centre">
         {props.hasOwnProperty("add") && (
@@ -57,6 +113,14 @@ function NutritionCard(props) {
             }}
           >
             DELETE🗑️
+          </button>
+        )}
+        {!small && (
+          <button
+            className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
+            onClick={() => setSmall(true)}
+          >
+            HIDE DETAILS📑
           </button>
         )}
       </div>

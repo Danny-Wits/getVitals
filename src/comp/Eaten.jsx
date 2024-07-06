@@ -115,18 +115,21 @@ function Eaten(props) {
             />
           </div>
         </div>
-      </div>
-      <div className="mt-2 p-1 ">
-        {n.eaten.map((element, key) => {
-          return (
-            <NutritionCard
-              key={key}
-              small={true}
-              nutrients={element}
-              delete={props.delete}
-            />
-          );
-        })}
+        <p className="p-2 mx-2 mt-8 mb-1 text-2xl font-extrabold text-indigo-950">
+          LIST OF THINGS YOU ATE
+        </p>
+        <div className="mt-2 p-1 ">
+          {n.eaten.map((element, key) => {
+            return (
+              <NutritionCard
+                key={key}
+                small={true}
+                nutrients={element}
+                delete={props.delete}
+              />
+            );
+          })}
+        </div>
       </div>
     </>
   );

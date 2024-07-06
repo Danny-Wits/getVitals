@@ -46,7 +46,7 @@ function Data(props) {
         <span className="m-2 p-2 text-xl ">SEARCH RESULTS</span>
         <button
           onClick={props.reset}
-          className="rounded-xl ml-auto mr-2 p-2 my-2 text-white bg-black min-w-20 focus:scale-105 shadow-md shadow-black"
+          className="rounded-xl ml-auto mr-2 p-2 my-2  border-gray-400 border-2 min-w-20 focus:scale-105 shadow-md shadow-black"
         >
           Clear❌
         </button>
@@ -58,6 +58,7 @@ function Data(props) {
             nutrients={element}
             add={props.eat}
             remove={props.remove}
+            small={true}
           />
         );
       })}

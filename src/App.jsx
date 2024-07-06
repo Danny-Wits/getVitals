@@ -5,16 +5,36 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import Cookies from "js-cookie";
 
 function App() {
+  //!STATES
   const [query, setQuery] = useState("");
+  const [data, setData] = useState([]);
+  const [eaten, setEaten] = useState({
+    name: "EATEN",
+    icon: "🍴",
+    calories: 0,
+    serving_size_g: 0,
+    fat_total_g: 0,
+    fat_saturated_g: 0,
+    protein_g: 0,
+    sodium_mg: 0,
+    potassium_mg: 0,
+    cholesterol_mg: 0,
+    carbohydrates_total_g: 0,
+    fiber_g: 0,
+    sugar_g: 0,
+    eaten: [],
+  });
+
   const queryChanged = (event) => {
     setQuery(event.target.value);
   };
-  const [data, setData] = useState([]);
 
+  //!REFS
   const button = useRef(null);
   const eatenTab = useRef(null);
   const eatTab = useRef(null);
 
+  //!API CALL
   const fetchInfo = () => {
     if (query.trim() == "") return;
     searchStarted();
@@ -30,9 +50,13 @@ function App() {
         return response.json();
       })
       .then((newData) => {
-        if (newData.items.length == 0) alert("NO MATCH FOUND!");
+        if (newData.items.length == 0) {
+          alert("NO MATCH FOUND!");
+          return;
+        }
+
         setData((prev) => {
-          return [...newData.items, ...prev];
+          return [...addIconToData(newData.items), ...prev];
         });
       })
       .catch((error) => console.log(error));
@@ -47,41 +71,35 @@ function App() {
     button.current.disabled = false;
     eatTab.current.click();
   };
+
+  //!DATA MANIPULATION
   const rmFromData = (n) => {
     setData((prev) => prev.filter((element) => element != n));
+  };
+
+  const addIconToData = (array) => {
+    return array.map((e) => {
+      e.icon = "🍽️";
+      return e;
+    });
   };
   const resetData = () => {
     setData([]);
   };
-
   const keydown = (event) => {
     if (event.key == "Enter" && button.current != null) {
       button.current.click();
     }
   };
 
-  const [eaten, setEaten] = useState({
-    name: "EATEN🍴",
-    calories: 0,
-    serving_size_g: 0,
-    fat_total_g: 0,
-    fat_saturated_g: 0,
-    protein_g: 0,
-    sodium_mg: 0,
-    potassium_mg: 0,
-    cholesterol_mg: 0,
-    carbohydrates_total_g: 0,
-    fiber_g: 0,
-    sugar_g: 0,
-    eaten: [],
-  });
-
+  //!EATEN MANIPULATION
   const addToEaten = (n) => {
     setEaten((e) => {
       eatenTab.current.className =
         "m-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black after:content-['👇']";
       return {
-        name: "EATEN🍴",
+        name: "EATEN",
+        icon: "🍽️",
         calories: e.calories + n.calories,
         serving_size_g: e.serving_size_g + n.serving_size_g,
         fat_total_g: e.fat_total_g + n.fat_total_g,
@@ -99,12 +117,12 @@ function App() {
     });
     rmFromData(n);
   };
-
   const delFromEaten = (n) => {
     setEaten((e) => {
       let multiplier = 1;
       return {
-        name: "EATEN🍴",
+        name: "EATEN",
+        icon: "🍽️",
         calories: e.calories - n.calories * multiplier,
         serving_size_g: e.serving_size_g - n.serving_size_g * multiplier,
         fat_total_g: e.fat_total_g - n.fat_total_g * multiplier,
@@ -123,7 +141,8 @@ function App() {
   };
   const eatenReset = () => {
     setEaten({
-      name: "EATEN🍴",
+      name: "EATEN",
+      icon: "🍴",
       calories: 0,
       serving_size_g: 0,
       fat_total_g: 0,
@@ -139,6 +158,7 @@ function App() {
     });
   };
 
+  //!SAVE AND LOAD COOKIES
   const save = () => {
     let flag = confirm(
       "DO YOU WANT TO USE BROWSER ES🍪 TO STORE YOUR MEALS ??? "
