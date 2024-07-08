@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import Nutrient from "./Nutrient";
 import NutritionCard from "./NutritionCard";
 import { DAILY_NUTRIENT_REQUIREMENTS as DSA } from "../const/dsaNutrient";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js/auto";
+
 function Eaten(props) {
   const n = props.nutrients;
+  const total = n["carbohydrates_total_g"] + n["protein_g"] + n["fat_total_g"];
   return (
     <>
       <div className="border-4 rounded-lg p-3 shadow-lg shadow-black">
@@ -72,6 +76,50 @@ function Eaten(props) {
               dsa={DSA.FIBER}
             />
           </div>
+          {n.eaten.length != 0 && (
+            <div className="max-w-xs  my-3 shadow-md shadow-black p-1 rounded-lg border-2">
+              <p className="m-2 font-bold text-lg">MACRO RATIO</p>
+              <Doughnut
+                data={{
+                  labels: ["CARBS", "PROTEIN", "FATS"],
+                  datasets: [
+                    {
+                      label: "YOUR RATIO",
+                      data: [
+                        (n["carbohydrates_total_g"] / total) * 100,
+                        (n["protein_g"] / total) * 100,
+                        (n["fat_total_g"] / total) * 100,
+                      ],
+                      backgroundColor: [
+                        "rgba(255, 99, 132,1)",
+                        "rgba(120, 255, 120,1)",
+                        "rgba(255, 205, 86,1)",
+                      ],
+                      hoverOffset: 5,
+                    },
+                    {
+                      label: "OPTIMAL RATIO",
+                      data: [50, 30, 20],
+                      backgroundColor: [
+                        "rgb(255, 99, 132)",
+                        "rgb(120, 255, 120)",
+                        "rgb(255, 205, 86)",
+                      ],
+                      hoverOffset: 2,
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: {
+                      onClick: (event, legendItem, legend) =>
+                        event.stopPropagation(),
+                    },
+                  },
+                }}
+              />
+            </div>
+          )}
         </div>
 
         <div className="nutrient-group">
