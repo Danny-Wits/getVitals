@@ -164,7 +164,7 @@ function App() {
       "DO YOU WANT TO USE BROWSER ES🍪 TO STORE YOUR MEALS ??? "
     );
     if (flag) {
-      Cookies.set("_eaten_", JSON.stringify(eaten), { expires: 1 });
+      Cookies.set("_eaten_", JSON.stringify(eaten), { expires: 2 });
       alert("SUCCESSFULLY STORED 👍👍👍");
     } else {
       alert("OK😭😭😭");
