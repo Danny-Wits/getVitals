@@ -3,7 +3,6 @@ import Data from "./comp/Data";
 import Eaten from "./comp/Eaten";
 import { NavLink, Route, Routes } from "react-router-dom";
 import Cookies from "js-cookie";
-import Nutrient from "./comp/Nutrient";
 
 function App() {
   //!STATES
