@@ -25,10 +25,6 @@ function App() {
     sugar_g: 0,
     eaten: [],
   });
-  const [testData, setTestData] = useState({
-    description: "",
-    foodNutrients: [],
-  });
 
   const queryChanged = (event) => {
     setQuery(event.target.value);
@@ -40,48 +36,33 @@ function App() {
   const eatTab = useRef(null);
 
   //!API CALL
-  // const fetchInfo = () => {
-  //   if (query.trim() == "") return;
-  //   searchStarted();
-  //   let url =
-  //     "https://api.calorieninjas.com/v1/nutrition?query=" +
-  //     query.trim().toLowerCase();
-  //   fetch(url, {
-  //     method: "GET",
-  //     headers: { "X-Api-Key": import.meta.env.VITE_YEK },
-  //   })
-  //     .then((response) => {
-  //       searchEnded();
-  //       return response.json();
-  //     })
-  //     .then((newData) => {
-  //       if (newData.items.length == 0) {
-  //         alert("NO MATCH FOUND!");
-  //         return;
-  //       }
-
-  //       setData((prev) => {
-  //         return [...addIconToData(newData.items), ...prev];
-  //       });
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
   const fetchInfo = () => {
-    let api_key = "PXb2JQhDRgCqLhFpXi3CjFyJj2xIRhqs30gcQ2dq";
-    let results = 1;
-    let types = ["Foundation"];
-    let url = `https://api.nal.usda.gov/fdc/v1/foods/search?query=${query}&api_key=${api_key}&pageSize=${results}&dataType=${types}`;
+    if (query.trim() == "") return;
     searchStarted();
-    fetch(url, { method: "GET" })
+    let url =
+      "https://api.calorieninjas.com/v1/nutrition?query=" +
+      query.trim().toLowerCase();
+    fetch(url, {
+      method: "GET",
+      headers: { "X-Api-Key": import.meta.env.VITE_YEK },
+    })
       .then((response) => {
+        searchEnded();
         return response.json();
       })
-      .then((data) => {
-        searchEnded();
-        console.log(data.foods[0]);
-        setTestData(data.foods[0]);
-      });
+      .then((newData) => {
+        if (newData.items.length == 0) {
+          alert("NO MATCH FOUND!");
+          return;
+        }
+
+        setData((prev) => {
+          return [...addIconToData(newData.items), ...prev];
+        });
+      })
+      .catch((error) => console.log(error));
   };
+
   const searchStarted = () => {
     button.current.disabled = true;
     button.current.innerHTML = "Searching";
@@ -260,37 +241,15 @@ function App() {
           <Route
             path="/"
             element={
-              /* 
               <div className="mx-3 border-gray-400 rounded-lg border-2">
-              //   <Data
-              //     data={data}
-              //     eat={addToEaten}
-              //     delete={delFromEaten}
-              //     remove={rmFromData}
-              //     load={load}
-              //     reset={resetData}
-              //   />
-              </div>
-              */
-              <div>
-                {
-                  <>
-                    <p>{testData.description}</p>
-                    <div className="mx-3 border-gray-400 rounded-lg border-2">
-                      {testData.foodNutrients.map((element, key) => {
-                        return (
-                          <Nutrient
-                            key={key}
-                            nutrient={element.nutrientName}
-                            value={element.value}
-                            unit={element.unitName}
-                            dsa={1000}
-                          />
-                        );
-                      })}
-                    </div>
-                  </>
-                }
+                <Data
+                  data={data}
+                  eat={addToEaten}
+                  delete={delFromEaten}
+                  remove={rmFromData}
+                  load={load}
+                  reset={resetData}
+                />
               </div>
             }
           ></Route>
