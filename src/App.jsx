@@ -29,7 +29,7 @@ function App() {
     description: "",
     foodNutrients: [],
   });
-
+  console.log(testData);
   const queryChanged = (event) => {
     setQuery(event.target.value);
   };
