@@ -12,9 +12,9 @@ function Nutrient(props) {
       </div>
     );
   }
-  let remaining = props.dsa - props.value;
+  let remaining = props.RDA - props.value;
   if (remaining < 0) remaining = 0;
-  let currentP = (props.value * 100) / props.dsa;
+  let currentP = (props.value * 100) / props.RDA;
   let color = "🟢";
   if (currentP <= 1) color = "🔴";
   else if (currentP <= 25) color = "🟠";

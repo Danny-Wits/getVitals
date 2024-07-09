@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Data from "./comp/Data";
 import Eaten from "./comp/Eaten";
 import { NavLink, Route, Routes } from "react-router-dom";
 import Cookies from "js-cookie";
-
+import { RDAcontext, RDAdefault } from "./const/RDAcontext";
+import RDA from "./comp/rda";
 function App() {
   //!STATES
   const [query, setQuery] = useState("");
@@ -24,6 +25,15 @@ function App() {
     sugar_g: 0,
     eaten: [],
   });
+
+  //!RDA
+  const [RDAvalues, setRDAvalue] = useState(RDAdefault);
+  useEffect(() => {
+    setRDAvalue(loadRDA());
+  }, []);
+  const resetRDA = () => {
+    setRDAvalue(RDAdefault);
+  };
 
   const queryChanged = (event) => {
     setQuery(event.target.value);
@@ -162,7 +172,7 @@ function App() {
   //!SAVE AND LOAD COOKIES
   const save = () => {
     let flag = confirm(
-      "DO YOU WANT TO USE BROWSER ES🍪 TO STORE YOUR MEALS ??? "
+      "DO YOU WANT TO USE BROWSER 🍪COOKIES🍪 TO STORE YOUR MEALS ??? "
     );
     if (flag) {
       Cookies.set("_eaten_", JSON.stringify(eaten), { expires: 2 });
@@ -182,6 +192,25 @@ function App() {
     setEaten(JSON.parse(loadedData));
     alert("Meals Loaded Successfully");
     eatenTab.current.click();
+  };
+  const saveRDA = () => {
+    let flag = confirm(
+      "DO YOU WANT TO USE BROWSER 🍪COOKIES🍪 TO STORE YOUR DSA SETTINGS ??? "
+    );
+    if (flag) {
+      Cookies.set("_RDA_", JSON.stringify(RDAvalues), { expires: 30 });
+      alert("SUCCESSFULLY STORED 👍👍👍");
+    } else {
+      alert("OK😭😭😭");
+    }
+  };
+  const loadRDA = () => {
+    let loadedData = Cookies.get("_RDA_");
+    console.log(loadedData);
+    if (loadedData == undefined) {
+      return RDAdefault;
+    }
+    return JSON.parse(loadedData);
   };
   return (
     <div className="w-screen h-screen">
@@ -210,28 +239,38 @@ function App() {
         </div>
       </div>
 
-      <div className="flex justify-around px-2 pt-2">
+      <div className="flex justify-around px-4 pt-2">
         <NavLink
           className={({ isActive }) =>
             isActive
-              ? "px-2 pt-2 bg-black rounded-t-lg text-white"
-              : "m-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
+              ? "px-2 pt-2  min-w-20 text-center font-bold bg-black rounded-t-lg text-white"
+              : "my-3 p-2 text-center font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
           }
           to={"/"}
           ref={eatTab}
         >
-          EAT MORE FOOD
+          EAT MORE
         </NavLink>
         <NavLink
           className={({ isActive }) =>
             isActive
-              ? "px-2 pt-2 bg-black rounded-t-lg text-white"
-              : "m-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
+              ? "px-2 pt-2 min-w-20 text-center font-bold bg-black rounded-t-lg text-white"
+              : "my-3 p-2  text-center font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
           }
           to={"/eaten"}
           ref={eatenTab}
         >
-          WHAT YOU ATE
+          EATEN
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            isActive
+              ? "px-2 pt-2 min-w-20 text-center font-bold bg-black rounded-t-lg text-white"
+              : "my-3 p-2  text-center font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
+          }
+          to={"/RDA"}
+        >
+          CONFIG⚙️
         </NavLink>
       </div>
 
@@ -240,30 +279,44 @@ function App() {
           <Route
             path="/"
             element={
-              <div className="mx-3 border-gray-400 rounded-lg border-2">
-                <Data
-                  data={data}
-                  eat={addToEaten}
-                  delete={delFromEaten}
-                  remove={rmFromData}
-                  load={load}
-                  reset={resetData}
-                />
-              </div>
+              <RDAcontext.Provider value={[RDAvalues, setRDAvalue]}>
+                <div className="mx-3 border-gray-400 rounded-lg border-2">
+                  <Data
+                    data={data}
+                    eat={addToEaten}
+                    delete={delFromEaten}
+                    remove={rmFromData}
+                    load={load}
+                    reset={resetData}
+                  />
+                </div>
+              </RDAcontext.Provider>
             }
           ></Route>
           <Route
             path="/eaten"
             element={
-              <div className="mx-3 border-gray-400 rounded-lg border-2">
-                <Eaten
-                  key={-1}
-                  nutrients={eaten}
-                  reset={eatenReset}
-                  delete={delFromEaten}
-                  save={save}
-                />
-              </div>
+              <RDAcontext.Provider value={[RDAvalues, setRDAvalue]}>
+                <div className="mx-3 border-gray-400 rounded-lg border-2">
+                  <Eaten
+                    key={-1}
+                    nutrients={eaten}
+                    reset={eatenReset}
+                    delete={delFromEaten}
+                    save={save}
+                  />
+                </div>
+              </RDAcontext.Provider>
+            }
+          ></Route>
+          <Route
+            path="/RDA"
+            element={
+              <RDAcontext.Provider value={[RDAvalues, setRDAvalue]}>
+                <div className="mx-3 border-gray-400 rounded-lg border-2">
+                  <RDA save={saveRDA} reset={resetRDA} />
+                </div>
+              </RDAcontext.Provider>
             }
           ></Route>
         </Routes>

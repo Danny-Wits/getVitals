@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Nutrient from "./Nutrient";
 import NutritionCard from "./NutritionCard";
-import { DAILY_NUTRIENT_REQUIREMENTS as DSA } from "../const/dsaNutrient";
+import { RDAcontext } from "../const/RDAcontext";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 
 function Eaten(props) {
   const n = props.nutrients;
   const total = n["carbohydrates_total_g"] + n["protein_g"] + n["fat_total_g"];
+  const [RDA, _] = useContext(RDAcontext);
   return (
     <>
       <div className="border-4 rounded-lg p-3 shadow-lg shadow-black">
@@ -37,13 +38,13 @@ function Eaten(props) {
               nutrient="🔥CALORIES"
               value={n["calories"]}
               unit={"KC"}
-              dsa={DSA.CALORIES}
+              RDA={RDA.CALORIES}
             />
             <Nutrient
               nutrient="🧊SUGAR"
               value={n["sugar_g"]}
               unit={"g"}
-              dsa={DSA.SUGAR}
+              RDA={RDA.SUGAR}
             />
           </div>
         </div>
@@ -57,25 +58,25 @@ function Eaten(props) {
                   nutrient="🥖CARBS"
                   value={n["carbohydrates_total_g"]}
                   unit={"g"}
-                  dsa={DSA.CARBOHYDRATES}
+                  RDA={RDA.CARBOHYDRATES}
                 />
                 <Nutrient
                   nutrient="💪PROTEIN"
                   value={n["protein_g"]}
                   unit={"g"}
-                  dsa={DSA.PROTEIN}
+                  RDA={RDA.PROTEIN}
                 />
                 <Nutrient
                   nutrient="🧈FATS"
                   value={n["fat_total_g"]}
                   unit={"g"}
-                  dsa={DSA.FATS.total}
+                  RDA={RDA.FATS_TOTAL}
                 />
                 <Nutrient
                   nutrient="🌾FIBER"
                   value={n["fiber_g"]}
                   unit={"g"}
-                  dsa={DSA.FIBER}
+                  RDA={RDA.FIBER}
                 />
               </div>
             </div>
@@ -88,6 +89,9 @@ function Eaten(props) {
                       labels: ["CARBS", "PROTEIN", "FATS"],
                       datasets: [
                         {
+                          animation: {
+                            delay: 1500,
+                          },
                           label: "YOUR RATIO",
                           data: [
                             (n["carbohydrates_total_g"] / total) * 100,
@@ -135,13 +139,13 @@ function Eaten(props) {
               nutrient="🍌POTASSIUM"
               value={n["potassium_mg"]}
               unit={"mg"}
-              dsa={DSA.POTASSIUM}
+              RDA={RDA.POTASSIUM}
             />
             <Nutrient
               nutrient="🧂SODIUM"
               value={n["sodium_mg"]}
               unit={"mg"}
-              dsa={DSA.SODIUM}
+              RDA={RDA.SODIUM}
             />
           </div>
         </div>
@@ -153,19 +157,19 @@ function Eaten(props) {
               nutrient="💯TOTAL"
               value={n["fat_total_g"]}
               unit={"g"}
-              dsa={DSA.FATS.total}
+              RDA={RDA.FATS_TOTAL}
             />
             <Nutrient
               nutrient="🥩SATURATED"
               value={n["fat_saturated_g"]}
               unit={"g"}
-              dsa={DSA.FATS.saturated}
+              RDA={RDA.FATS_SATURATED}
             />
             <Nutrient
               nutrient="🫀Cholesterol"
               value={n["cholesterol_mg"]}
               unit={"mg"}
-              dsa={DSA.FATS.cholesterol}
+              RDA={RDA.FATS_CHOLESTEROL}
             />
           </div>
         </div>

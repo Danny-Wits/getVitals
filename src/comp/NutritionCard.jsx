@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Nutrient from "./Nutrient";
-import { DAILY_NUTRIENT_REQUIREMENTS as DSA } from "../const/dsaNutrient";
+import { RDAcontext } from "../const/RDAcontext";
+
 function NutritionCard(props) {
   const n = props.nutrients;
   const mealPerDay = 1;
   const [loaded, setIconLoaded] = useState(false);
   const [small, setSmall] = useState(props.small);
+  const [RDA, _] = useContext(RDAcontext);
   useEffect(() => {
     let url = `https://emoji-api.com/emojis?search=${n["name"]}&access_key=${
       import.meta.env.VITE_EMOJI
@@ -161,13 +163,13 @@ function NutritionCard(props) {
             nutrient="🔥CALORIES"
             value={n["calories"]}
             unit={"KC"}
-            dsa={DSA.CALORIES / mealPerDay}
+            RDA={RDA.CALORIES / mealPerDay}
           />
           <Nutrient
             nutrient="🧊SUGAR"
             value={n["sugar_g"]}
             unit={"g"}
-            dsa={DSA.SUGAR / mealPerDay}
+            RDA={RDA.SUGAR / mealPerDay}
           />
         </div>
       </div>
@@ -178,25 +180,25 @@ function NutritionCard(props) {
             nutrient="🥖CARBS"
             value={n["carbohydrates_total_g"]}
             unit={"g"}
-            dsa={DSA.CARBOHYDRATES / mealPerDay}
+            RDA={RDA.CARBOHYDRATES / mealPerDay}
           />
           <Nutrient
             nutrient="💪PROTEIN"
             value={n["protein_g"]}
             unit={"g"}
-            dsa={DSA.PROTEIN / mealPerDay}
+            RDA={RDA.PROTEIN / mealPerDay}
           />
           <Nutrient
             nutrient="🧈FATS"
             value={n["fat_total_g"]}
             unit={"g"}
-            dsa={DSA.FATS.total / mealPerDay}
+            RDA={RDA.FATS_TOTAL / mealPerDay}
           />
           <Nutrient
             nutrient="🌾FIBER"
             value={n["fiber_g"]}
             unit={"g"}
-            dsa={DSA.FIBER / mealPerDay}
+            RDA={RDA.FIBER / mealPerDay}
           />
         </div>
       </div>
@@ -207,13 +209,13 @@ function NutritionCard(props) {
             nutrient="🍌POTASSIUM"
             value={n["potassium_mg"]}
             unit={"mg"}
-            dsa={DSA.POTASSIUM / mealPerDay}
+            RDA={RDA.POTASSIUM / mealPerDay}
           />
           <Nutrient
             nutrient="🧂SODIUM"
             value={n["sodium_mg"]}
             unit={"mg"}
-            dsa={DSA.SODIUM / mealPerDay}
+            RDA={RDA.SODIUM / mealPerDay}
           />
         </div>
       </div>
@@ -224,19 +226,19 @@ function NutritionCard(props) {
             nutrient="💯TOTAL"
             value={n["fat_total_g"]}
             unit={"g"}
-            dsa={DSA.FATS.total / mealPerDay}
+            RDA={RDA.FATS_TOTAL / mealPerDay}
           />
           <Nutrient
             nutrient="🥩SATURATED"
             value={n["fat_saturated_g"]}
             unit={"g"}
-            dsa={DSA.FATS.saturated / mealPerDay}
+            RDA={RDA.FATS_SATURATED / mealPerDay}
           />
           <Nutrient
             nutrient="🫀Cholesterol"
             value={n["cholesterol_mg"]}
             unit={"mg"}
-            dsa={DSA.FATS.cholesterol / mealPerDay}
+            RDA={RDA.FATS_CHOLESTEROL / mealPerDay}
           />
         </div>
       </div>
