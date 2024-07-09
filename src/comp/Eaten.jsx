@@ -3,9 +3,6 @@ import Nutrient from "./Nutrient";
 import NutritionCard from "./NutritionCard";
 import { RDAcontext } from "../const/RDAcontext";
 import { Doughnut } from "react-chartjs-2";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
-gsap.registerPlugin(ScrollTrigger);
 
 function Eaten(props) {
   const n = props.nutrients;
