@@ -1,14 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import Nutrient from "./Nutrient";
 import NutritionCard from "./NutritionCard";
 import { RDAcontext } from "../const/RDAcontext";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js/auto";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+gsap.registerPlugin(ScrollTrigger);
 
 function Eaten(props) {
   const n = props.nutrients;
   const total = n["carbohydrates_total_g"] + n["protein_g"] + n["fat_total_g"];
   const [RDA, _] = useContext(RDAcontext);
+  const scrollRef = useRef();
+
   return (
     <>
       <div className="border-4 rounded-lg p-3 shadow-lg shadow-black">
@@ -30,147 +34,148 @@ function Eaten(props) {
           </button>
         </div>
         <div></div>
-
-        <div className="nutrient-group">
-          <p className="m-2 font-bold text-lg">ENERGY</p>
-          <div className="mb-3 flex flex-wrap">
-            <Nutrient
-              nutrient="🔥CALORIES"
-              value={n["calories"]}
-              unit={"KC"}
-              RDA={RDA.CALORIES}
-            />
-            <Nutrient
-              nutrient="🧊SUGAR"
-              value={n["sugar_g"]}
-              unit={"g"}
-              RDA={RDA.SUGAR}
-            />
-          </div>
-        </div>
-
-        <div className="nutrient-group">
-          <p className="m-2 font-bold text-lg">MACRO NUTRIENTS</p>
-          <div className="flex flex-wrap items-center">
-            <div className="sm:w-2/3 ">
-              <div className="mb-3 flex flex-wrap">
-                <Nutrient
-                  nutrient="🥖CARBS"
-                  value={n["carbohydrates_total_g"]}
-                  unit={"g"}
-                  RDA={RDA.CARBOHYDRATES}
-                />
-                <Nutrient
-                  nutrient="💪PROTEIN"
-                  value={n["protein_g"]}
-                  unit={"g"}
-                  RDA={RDA.PROTEIN}
-                />
-                <Nutrient
-                  nutrient="🧈FATS"
-                  value={n["fat_total_g"]}
-                  unit={"g"}
-                  RDA={RDA.FATS_TOTAL}
-                />
-                <Nutrient
-                  nutrient="🌾FIBER"
-                  value={n["fiber_g"]}
-                  unit={"g"}
-                  RDA={RDA.FIBER}
-                />
-              </div>
+        <div ref={scrollRef}>
+          <div className="nutrient-group">
+            <p className="m-2 font-bold text-lg">ENERGY</p>
+            <div className="mb-3 flex flex-wrap">
+              <Nutrient
+                nutrient="🔥CALORIES"
+                value={n["calories"]}
+                unit={"KC"}
+                RDA={RDA.CALORIES}
+              />
+              <Nutrient
+                nutrient="🧊SUGAR"
+                value={n["sugar_g"]}
+                unit={"g"}
+                RDA={RDA.SUGAR}
+              />
             </div>
-            <div className="p-1 sm:ml-auto w-10/12 sm:w-1/4">
-              {n.eaten.length != 0 && (
-                <div className=" shadow-md shadow-black rounded-lg border-2">
-                  <p className="p-2 font-bold text-lg">MACRO RATIO</p>
-                  <Doughnut
-                    data={{
-                      labels: ["CARBS", "PROTEIN", "FATS"],
-                      datasets: [
-                        {
-                          animation: {
-                            delay: 1500,
-                          },
-                          label: "YOUR RATIO",
-                          data: [
-                            (n["carbohydrates_total_g"] / total) * 100,
-                            (n["protein_g"] / total) * 100,
-                            (n["fat_total_g"] / total) * 100,
-                          ],
-                          backgroundColor: [
-                            "rgba(255, 99, 132,1)",
-                            "rgba(120, 255, 120,1)",
-                            "rgba(255, 205, 86,1)",
-                          ],
-                          hoverOffset: 5,
-                        },
-                        {
-                          label: "OPTIMAL RATIO",
-                          data: [50, 30, 20],
-                          backgroundColor: [
-                            "rgb(255, 99, 132)",
-                            "rgb(120, 255, 120)",
-                            "rgb(255, 205, 86)",
-                          ],
-                          hoverOffset: 2,
-                        },
-                      ],
-                    }}
-                    options={{
-                      plugins: {
-                        legend: {
-                          position: "bottom",
-                          onClick: (e) => {},
-                        },
-                      },
-                    }}
+          </div>
+
+          <div className="nutrient-group">
+            <p className="m-2 font-bold text-lg">MACRO NUTRIENTS</p>
+            <div className="flex flex-wrap items-center">
+              <div className="sm:w-2/3 ">
+                <div className="mb-3 flex flex-wrap">
+                  <Nutrient
+                    nutrient="🥖CARBS"
+                    value={n["carbohydrates_total_g"]}
+                    unit={"g"}
+                    RDA={RDA.CARBOHYDRATES}
+                  />
+                  <Nutrient
+                    nutrient="💪PROTEIN"
+                    value={n["protein_g"]}
+                    unit={"g"}
+                    RDA={RDA.PROTEIN}
+                  />
+                  <Nutrient
+                    nutrient="🧈FATS"
+                    value={n["fat_total_g"]}
+                    unit={"g"}
+                    RDA={RDA.FATS_TOTAL}
+                  />
+                  <Nutrient
+                    nutrient="🌾FIBER"
+                    value={n["fiber_g"]}
+                    unit={"g"}
+                    RDA={RDA.FIBER}
                   />
                 </div>
-              )}
+              </div>
+              <div className="p-1 sm:ml-auto w-10/12 sm:w-1/4">
+                {n.eaten.length != 0 && (
+                  <div className=" shadow-md shadow-black rounded-lg border-2">
+                    <p className="p-2 font-bold text-lg">MACRO RATIO</p>
+                    <Doughnut
+                      data={{
+                        labels: ["CARBS", "PROTEIN", "FATS"],
+                        datasets: [
+                          {
+                            animation: {
+                              delay: 1500,
+                            },
+                            label: "YOUR RATIO",
+                            data: [
+                              (n["carbohydrates_total_g"] / total) * 100,
+                              (n["protein_g"] / total) * 100,
+                              (n["fat_total_g"] / total) * 100,
+                            ],
+                            backgroundColor: [
+                              "rgba(255, 99, 132,1)",
+                              "rgba(120, 255, 120,1)",
+                              "rgba(255, 205, 86,1)",
+                            ],
+                            hoverOffset: 5,
+                          },
+                          {
+                            label: "OPTIMAL RATIO",
+                            data: [50, 30, 20],
+                            backgroundColor: [
+                              "rgb(255, 99, 132)",
+                              "rgb(120, 255, 120)",
+                              "rgb(255, 205, 86)",
+                            ],
+                            hoverOffset: 2,
+                          },
+                        ],
+                      }}
+                      options={{
+                        plugins: {
+                          legend: {
+                            position: "bottom",
+                            onClick: (e) => {},
+                          },
+                        },
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="nutrient-group">
-          <p className="m-2 font-bold text-lg">MINERALS</p>
-          <div className="mb-3 flex flex-wrap">
-            <Nutrient
-              nutrient="🍌POTASSIUM"
-              value={n["potassium_mg"]}
-              unit={"mg"}
-              RDA={RDA.POTASSIUM}
-            />
-            <Nutrient
-              nutrient="🧂SODIUM"
-              value={n["sodium_mg"]}
-              unit={"mg"}
-              RDA={RDA.SODIUM}
-            />
+          <div className="nutrient-group">
+            <p className="m-2 font-bold text-lg">MINERALS</p>
+            <div className="mb-3 flex flex-wrap">
+              <Nutrient
+                nutrient="🍌POTASSIUM"
+                value={n["potassium_mg"]}
+                unit={"mg"}
+                RDA={RDA.POTASSIUM}
+              />
+              <Nutrient
+                nutrient="🧂SODIUM"
+                value={n["sodium_mg"]}
+                unit={"mg"}
+                RDA={RDA.SODIUM}
+              />
+            </div>
           </div>
-        </div>
 
-        <div className="nutrient-group">
-          <p className="m-2 font-bold text-lg">FATS</p>
-          <div className="mb-3 flex flex-wrap">
-            <Nutrient
-              nutrient="💯TOTAL"
-              value={n["fat_total_g"]}
-              unit={"g"}
-              RDA={RDA.FATS_TOTAL}
-            />
-            <Nutrient
-              nutrient="🥩SATURATED"
-              value={n["fat_saturated_g"]}
-              unit={"g"}
-              RDA={RDA.FATS_SATURATED}
-            />
-            <Nutrient
-              nutrient="🫀Cholesterol"
-              value={n["cholesterol_mg"]}
-              unit={"mg"}
-              RDA={RDA.FATS_CHOLESTEROL}
-            />
+          <div className="nutrient-group">
+            <p className="m-2 font-bold text-lg">FATS</p>
+            <div className="mb-3 flex flex-wrap">
+              <Nutrient
+                nutrient="💯TOTAL"
+                value={n["fat_total_g"]}
+                unit={"g"}
+                RDA={RDA.FATS_TOTAL}
+              />
+              <Nutrient
+                nutrient="🥩SATURATED"
+                value={n["fat_saturated_g"]}
+                unit={"g"}
+                RDA={RDA.FATS_SATURATED}
+              />
+              <Nutrient
+                nutrient="🫀Cholesterol"
+                value={n["cholesterol_mg"]}
+                unit={"mg"}
+                RDA={RDA.FATS_CHOLESTEROL}
+              />
+            </div>
           </div>
         </div>
       </div>

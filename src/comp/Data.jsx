@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import NutritionCard from "./NutritionCard";
 
 function Data(props) {
   if (props.data.length == 0) {
     return (
-      <div className="border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col">
+      <div className="a border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col">
         <h2 className="text-black">INTRO</h2>
         <br />
-        <p className="text-slate-600 text-justify">
+        <p className="text-slate-600 text-justify animate">
           Hey there 👋, food explorers! Ready to unlock the secrets of your
           snacks and meals? Here, you can become a nutrition superhero! Our
           awesome tool tells you everything you need to know about the nutrients
@@ -15,14 +15,21 @@ function Data(props) {
         </p>
         <br />
         <h2 className="text-black">START</h2>
-        <p className="text-slate-600">
+        <p className="text-slate-600 animate">
           Just type in what you want to SEARCH🔍... <br />
           Follow the format : <br /> Quantity🔢 Name of the Food🍽️ and then the
           next food item
         </p>
         <br />
+        <h2 className="text-black">CONFIG</h2>
+        <p className="text-slate-600 animate">
+          You can head over to the Config⚙️ tab to adjust the RDA (Recommended
+          Dietary Allowance) according to your needs. The are set to a average
+          value by default
+        </p>
+        <br />
         <h2 className="text-black">EXAMPLES</h2>
-        <p className="text-slate-600">
+        <p className="text-slate-600 animate">
           1kg sugar
           <br /> one apple and one orange
           <br /> 100g cake with 10 cookies
