@@ -32,7 +32,7 @@ function App() {
     setRDAvalue(loadRDA());
   }, []);
   const resetRDA = () => {
-    setRDAvalue(RDAdefault);
+    setRDAvalue({ ...RDAdefault });
   };
 
   const queryChanged = (event) => {
@@ -206,7 +206,6 @@ function App() {
   };
   const loadRDA = () => {
     let loadedData = Cookies.get("_RDA_");
-    console.log(loadedData);
     if (loadedData == undefined) {
       return RDAdefault;
     }

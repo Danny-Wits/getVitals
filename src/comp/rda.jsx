@@ -6,9 +6,10 @@ function RDA(props) {
   const [RDA, setRDA] = useContext(RDAcontext);
   const change = (name, e) => {
     setRDA((prev) => {
-      prev[name] = e.target.value;
+      let x = prev
+      x[name] = e.target.value;
       return {
-        ...prev,
+        ...x,
       };
     });
   };
