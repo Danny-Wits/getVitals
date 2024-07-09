@@ -31,10 +31,25 @@ function NutritionCard(props) {
   if (small) {
     return (
       <div className="mx-1 my-4 border-4 rounded-lg p-3 shadow-lg shadow-black">
-        <p className="p-2 mb-2 mr-auto text-2xl font-semibold text-indigo-950">
-          {n.name}
-          {n.icon}
-        </p>
+        <div className="p-1 flex">
+          <p
+            onClick={() => setSmall((prev) => !prev)}
+            className="p-2 mr-auto text-2xl font-semibold text-indigo-950"
+          >
+            {n.name}
+            {n.icon}
+          </p>
+          {props.hasOwnProperty("delete") && (
+            <button
+              className="p-2"
+              onClick={() => {
+                props.delete(n);
+              }}
+            >
+              ❌
+            </button>
+          )}
+        </div>
         <div className="flex justify-left mb-2 items-centre">
           {props.hasOwnProperty("add") && (
             <button
@@ -46,16 +61,7 @@ function NutritionCard(props) {
               EAT🍴
             </button>
           )}
-          {props.hasOwnProperty("delete") && (
-            <button
-              className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
-              onClick={() => {
-                props.delete(n);
-              }}
-            >
-              UN-EAT❌
-            </button>
-          )}
+
           {props.hasOwnProperty("remove") && (
             <button
               className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
@@ -66,24 +72,75 @@ function NutritionCard(props) {
               DELETE🗑️
             </button>
           )}
-          {small && (
+          {/* {small && (
             <button
               className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
               onClick={() => setSmall(false)}
             >
-              DETAIL📃
+              ⬇
             </button>
-          )}
+          )} */}
         </div>
+
+        <div className="my-3 shadow-md shadow-black rounded-lg border-2 p-1">
+          <p className="p-2 mr-auto font-semibold text-indigo-950">
+            Major Details
+          </p>
+          <div>
+            <Nutrient
+              nutrient="🔥CALORIES"
+              value={n["calories"]}
+              unit={"KC"}
+              small={true}
+            />
+            <Nutrient
+              nutrient="🥖CARBS"
+              value={n["carbohydrates_total_g"]}
+              unit={"g"}
+              small={true}
+            />
+            <Nutrient
+              nutrient="💪PROTEIN"
+              value={n["protein_g"]}
+              unit={"g"}
+              small={true}
+            />
+            <Nutrient
+              nutrient="🧈FATS"
+              value={n["fat_total_g"]}
+              unit={"g"}
+              small={true}
+            />
+          </div>
+        </div>
+        <p onClick={() => setSmall((prev) => !prev)} className="text-center">
+          TAP FOR DETAILS
+        </p>
       </div>
     );
   }
   return (
     <div className="mx-1 my-4 border-4 rounded-lg p-3 shadow-lg shadow-black">
-      <p className="p-2 mb-2 mr-auto text-2xl font-semibold text-indigo-950">
-        {n.name}
-        {n.icon}
-      </p>
+      <div className="p-1 flex">
+        <p
+          onClick={() => setSmall((prev) => !prev)}
+          className="p-2 mr-auto text-2xl font-semibold text-indigo-950"
+        >
+          {n.name}
+          {n.icon}
+        </p>
+        {props.hasOwnProperty("delete") && (
+          <button
+            className="p-2"
+            onClick={() => {
+              props.delete(n);
+            }}
+          >
+            ❌
+          </button>
+        )}
+      </div>
+
       <div className="flex justify-left mb-2 items-centre">
         {props.hasOwnProperty("add") && (
           <button
@@ -93,16 +150,6 @@ function NutritionCard(props) {
             }}
           >
             EAT🍴
-          </button>
-        )}
-        {props.hasOwnProperty("delete") && (
-          <button
-            className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
-            onClick={() => {
-              props.delete(n);
-            }}
-          >
-            UN-EAT❌
           </button>
         )}
         {props.hasOwnProperty("remove") && (
@@ -115,14 +162,14 @@ function NutritionCard(props) {
             DELETE🗑️
           </button>
         )}
-        {!small && (
+        {/* {!small && (
           <button
             className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
             onClick={() => setSmall(true)}
           >
             HIDE DETAILS📑
           </button>
-        )}
+        )} */}
       </div>
 
       <div className="nutrient-group">
@@ -211,6 +258,9 @@ function NutritionCard(props) {
           />
         </div>
       </div>
+      <p onClick={() => setSmall((prev) => !prev)} className="text-center">
+        TAP TO HIDE DETAILS
+      </p>
     </div>
   );
 }
