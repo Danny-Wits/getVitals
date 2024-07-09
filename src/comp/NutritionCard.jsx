@@ -72,20 +72,10 @@ function NutritionCard(props) {
               DELETE🗑️
             </button>
           )}
-          {/* {small && (
-            <button
-              className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
-              onClick={() => setSmall(false)}
-            >
-              ⬇
-            </button>
-          )} */}
         </div>
 
         <div className="my-3 shadow-md shadow-black rounded-lg border-2 p-1">
-          <p className="p-2 mr-auto font-semibold text-indigo-950">
-            Major Details
-          </p>
+          <p className="p-2 mr-auto font-semibold text-indigo-950">SUMMARY</p>
           <div>
             <Nutrient
               nutrient="🔥CALORIES"
@@ -162,14 +152,6 @@ function NutritionCard(props) {
             DELETE🗑️
           </button>
         )}
-        {/* {!small && (
-          <button
-            className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
-            onClick={() => setSmall(true)}
-          >
-            HIDE DETAILS📑
-          </button>
-        )} */}
       </div>
 
       <div className="nutrient-group">
