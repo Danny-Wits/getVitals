@@ -31,7 +31,7 @@ function RDA(props) {
       borderRadius: "100",
       ease: "circ",
     });
-  }, [RDA]);
+  }, []);
   return (
     <div className="border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col rda overflow-hidden">
       <div className="flex p-2 justify-end items-end">
