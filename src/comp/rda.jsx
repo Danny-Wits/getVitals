@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react";
 import { RDAcontext } from "../const/RDAcontext";
 import RDAchanger from "./RDAchanger";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 function RDA(props) {
   const [RDA, setRDA] = useContext(RDAcontext);
@@ -13,8 +15,25 @@ function RDA(props) {
       };
     });
   };
+  useGSAP(() => {
+    gsap.from(".rda", {
+      height: 1,
+      duration: 0.6,
+      ease: "power1.in",
+    });
+  }, []);
+  useGSAP(() => {
+    gsap.from(".nutrient-group", {
+      opacity: 1,
+      duration: 0.3,
+      scale: 0.1,
+      delay: 0.3,
+      borderRadius: "100",
+      ease: "circ",
+    });
+  }, [RDA]);
   return (
-    <div className="border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col">
+    <div className="border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col rda overflow-hidden">
       <div className="flex p-2 justify-end items-end">
         <p className="mb-4 mr-auto text-2xl font-extrabold text-indigo-950">
           RDA VALUES

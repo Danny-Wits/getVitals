@@ -3,9 +3,10 @@ import NutritionCard from "./NutritionCard";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-
 function Data(props) {
   const dataElements = useRef(null);
+  const first = useRef(true);
+  const home = useRef(null);
 
   useGSAP(
     () => {
@@ -25,9 +26,24 @@ function Data(props) {
     },
     { dependencies: [props.searched] }
   );
+  useGSAP(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (home.current == null) return;
+    gsap.from(home.current, {
+      height: 1,
+      duration: 0.6,
+      ease: "power1.in",
+    });
+  }, []);
   if (props.data.length == 0) {
     return (
-      <div className=" border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col">
+      <div
+        ref={home}
+        className=" border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col overflow-hidden"
+      >
         <h2 className="text-black">INTRO</h2>
         <br />
         <p className="text-slate-600 text-justify animate">

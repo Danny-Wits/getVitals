@@ -13,10 +13,18 @@ function Eaten(props) {
   const [RDA, _] = useContext(RDAcontext);
   const scrollRef = useRef();
   useGSAP(() => {
+    gsap.from(".eaten", {
+      height: 1,
+      duration: 0.6,
+      ease: "power1.in",
+    });
+  }, []);
+  useGSAP(() => {
     gsap.from(".nutrient-group", {
       opacity: 1,
       duration: 0.3,
       scale: 0.1,
+      delay: 0.3,
       borderRadius: "100",
       ease: "circ",
     });
@@ -24,7 +32,7 @@ function Eaten(props) {
 
   return (
     <>
-      <div className="border-4 rounded-lg p-3 shadow-lg shadow-black">
+      <div className="border-4 rounded-lg p-3 shadow-lg shadow-black eaten overflow-hidden">
         <div className="flex p-2 justify-evenly items-end">
           <p className="mb-4 mr-auto text-2xl font-extrabold text-indigo-950">
             {n["name"]}
