@@ -55,14 +55,14 @@ function App() {
       ease: "elastic",
     });
     timeline.from(".nav", {
-      x: "100vw",
+      x: "-100vw",
       opacity: 1,
       delay: "-0.5",
       stagger: 0.1,
       ease: "power2.in",
     });
     timeline.from(".data", {
-      x: "100vw",
+      x: "-100vw",
       opacity: 1,
       delay: "-0.7",
       ease: "power2.in",
