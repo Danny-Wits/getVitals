@@ -3,12 +3,24 @@ import Nutrient from "./Nutrient";
 import NutritionCard from "./NutritionCard";
 import { RDAcontext } from "../const/RDAcontext";
 import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js/auto";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 function Eaten(props) {
   const n = props.nutrients;
   const total = n["carbohydrates_total_g"] + n["protein_g"] + n["fat_total_g"];
   const [RDA, _] = useContext(RDAcontext);
   const scrollRef = useRef();
+  useGSAP(() => {
+    gsap.from(".nutrient-group", {
+      opacity: 1,
+      duration: 0.3,
+      scale: 0.1,
+      borderRadius: "100",
+      ease: "circ",
+    });
+  }, [n]);
 
   return (
     <>
@@ -30,9 +42,9 @@ function Eaten(props) {
             RESET🪥
           </button>
         </div>
-        <div></div>
-        <div ref={scrollRef}>
-          <div className="nutrient-group">
+
+        <div className="flex flex-wrap ">
+          <div className="nutrient-group md:w-auto">
             <p className="m-2 font-bold text-lg">ENERGY</p>
             <div className="mb-3 flex flex-wrap">
               <Nutrient
@@ -50,7 +62,7 @@ function Eaten(props) {
             </div>
           </div>
 
-          <div className="nutrient-group">
+          <div className="nutrient-group md:w-auto">
             <p className="m-2 font-bold text-lg">MACRO NUTRIENTS</p>
             <div className="flex flex-wrap items-center">
               <div className="sm:w-2/3 ">
@@ -133,7 +145,7 @@ function Eaten(props) {
             </div>
           </div>
 
-          <div className="nutrient-group">
+          <div className="nutrient-group md:w-5/12">
             <p className="m-2 font-bold text-lg">MINERALS</p>
             <div className="mb-3 flex flex-wrap">
               <Nutrient
@@ -151,7 +163,7 @@ function Eaten(props) {
             </div>
           </div>
 
-          <div className="nutrient-group">
+          <div className="nutrient-group md:w-5/12">
             <p className="m-2 font-bold text-lg">FATS</p>
             <div className="mb-3 flex flex-wrap">
               <Nutrient
@@ -189,6 +201,7 @@ function Eaten(props) {
                   small={true}
                   nutrients={element}
                   delete={props.delete}
+                  smallText={true}
                 />
               );
             })}

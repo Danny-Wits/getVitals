@@ -9,5 +9,5 @@ body {
 }
 
 .nutrient-group {
-  @apply my-3 shadow-md shadow-black p-2 rounded-lg border-2;
+  @apply my-3 mx-1 shadow-md shadow-black p-2 rounded-lg border-2;
 }

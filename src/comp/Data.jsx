@@ -1,10 +1,33 @@
-import React from "react";
+import React, { useRef } from "react";
 import NutritionCard from "./NutritionCard";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+
 
 function Data(props) {
+  const dataElements = useRef(null);
+
+  useGSAP(
+    () => {
+      if (dataElements.current == null) return;
+      let dataList = gsap.utils.toArray(dataElements.current.children);
+      dataList.forEach((element, key) => {
+        gsap.from(element, {
+          opacity: 0,
+          rotate: 30,
+          duration: 0.75,
+          y: "-100vh",
+          borderRadius: "100%",
+          delay: key / 4,
+          ease: "elastic",
+        });
+      });
+    },
+    { dependencies: [props.searched] }
+  );
   if (props.data.length == 0) {
     return (
-      <div className="a border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col">
+      <div className=" border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col">
         <h2 className="text-black">INTRO</h2>
         <br />
         <p className="text-slate-600 text-justify animate">
@@ -58,17 +81,20 @@ function Data(props) {
           Clear❌
         </button>
       </div>
-      {props.data.map((element, key) => {
-        return (
-          <NutritionCard
-            key={key}
-            nutrients={element}
-            add={props.eat}
-            remove={props.remove}
-            small={true}
-          />
-        );
-      })}
+
+      <div ref={dataElements}>
+        {props.data.map((element, key) => {
+          return (
+            <NutritionCard
+              key={key}
+              nutrients={element}
+              add={props.eat}
+              remove={props.remove}
+              small={true}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

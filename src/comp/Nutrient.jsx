@@ -20,18 +20,38 @@ function Nutrient(props) {
   else if (currentP <= 25) color = "🟠";
   else if (currentP <= 70) color = "🟡";
   else if (currentP >= 100 && currentP <= 150) color = "🔵";
-  else if (currentP > 150) color = "💀";
+  else if (currentP > 150 && currentP < 1000) color = "💀";
+  else if (currentP > 100) {
+    color = "💐RIP💐";
+    currentP = -1;
+  }
+  let extraClass = "";
+  if (props.smallText) {
+    extraClass = "sm:text-sm text-xs";
+  }
   return (
-    <span className="my-2 sm:m-2 rounded-s-lg  rounded-e-lg flex flex-row flex-wrap">
-      <span className="py-2 pl-1 pr-2 rounded-s-lg  border-2 border-black bg-black text-white">
+    <span className="my-2 sm:m-2 rounded-s-lg  rounded-e-lg flex ">
+      <span
+        className={`flex-shrink-0 py-2 pl-1 pr-2 rounded-s-lg  border-2 border-black bg-black text-white ${extraClass}`}
+      >
         {props.nutrient}
       </span>
 
-      <span className="py-2  pl-1 pr-2 font-bold border-2 border-black">
-        {props.value.toFixed(1)}
+      <span
+        className={
+          "flex-shrink py-2  pl-1 pr-2  font-bold border-2 border-black " +
+          extraClass
+        }
+      >
+        {props.value.toFixed(1) + " "}
         {props.unit}
       </span>
-      <span className="py-2 pl-1 pr-2 rounded-e-lg font-bold border-r-2 border-black border-y-2">
+      <span
+        className={
+          "flex-shrink py-2 pl-1 pr-2 rounded-e-lg font-bold border-r-2 border-black border-y-2 " +
+          extraClass
+        }
+      >
         {color}
         {currentP.toFixed(0)}% ➕{remaining.toFixed(0)}
       </span>

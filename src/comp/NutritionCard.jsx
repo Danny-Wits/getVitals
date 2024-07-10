@@ -164,12 +164,14 @@ function NutritionCard(props) {
             value={n["calories"]}
             unit={"KC"}
             RDA={RDA.CALORIES / mealPerDay}
+            smallText={props.smallText}
           />
           <Nutrient
             nutrient="🧊SUGAR"
             value={n["sugar_g"]}
             unit={"g"}
             RDA={RDA.SUGAR / mealPerDay}
+            smallText={props.smallText}
           />
         </div>
       </div>
@@ -181,24 +183,28 @@ function NutritionCard(props) {
             value={n["carbohydrates_total_g"]}
             unit={"g"}
             RDA={RDA.CARBOHYDRATES / mealPerDay}
+            smallText={props.smallText}
           />
           <Nutrient
             nutrient="💪PROTEIN"
             value={n["protein_g"]}
             unit={"g"}
             RDA={RDA.PROTEIN / mealPerDay}
+            smallText={props.smallText}
           />
           <Nutrient
             nutrient="🧈FATS"
             value={n["fat_total_g"]}
             unit={"g"}
             RDA={RDA.FATS_TOTAL / mealPerDay}
+            smallText={props.smallText}
           />
           <Nutrient
             nutrient="🌾FIBER"
             value={n["fiber_g"]}
             unit={"g"}
             RDA={RDA.FIBER / mealPerDay}
+            smallText={props.smallText}
           />
         </div>
       </div>
@@ -210,12 +216,14 @@ function NutritionCard(props) {
             value={n["potassium_mg"]}
             unit={"mg"}
             RDA={RDA.POTASSIUM / mealPerDay}
+            smallText={props.smallText}
           />
           <Nutrient
             nutrient="🧂SODIUM"
             value={n["sodium_mg"]}
             unit={"mg"}
             RDA={RDA.SODIUM / mealPerDay}
+            smallText={props.smallText}
           />
         </div>
       </div>
@@ -227,18 +235,21 @@ function NutritionCard(props) {
             value={n["fat_total_g"]}
             unit={"g"}
             RDA={RDA.FATS_TOTAL / mealPerDay}
+            smallText={props.smallText}
           />
           <Nutrient
             nutrient="🥩SATURATED"
             value={n["fat_saturated_g"]}
             unit={"g"}
             RDA={RDA.FATS_SATURATED / mealPerDay}
+            smallText={props.smallText}
           />
           <Nutrient
             nutrient="🫀Cholesterol"
             value={n["cholesterol_mg"]}
             unit={"mg"}
             RDA={RDA.FATS_CHOLESTEROL / mealPerDay}
+            smallText={props.smallText}
           />
         </div>
       </div>

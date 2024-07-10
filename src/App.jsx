@@ -5,10 +5,13 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import Cookies from "js-cookie";
 import { RDAcontext, RDAdefault } from "./const/RDAcontext";
 import RDA from "./comp/rda";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 function App() {
   //!STATES
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
+  const [searched, setSearched] = useState(false);
   const [eaten, setEaten] = useState({
     name: "EATEN",
     icon: "🍴",
@@ -43,7 +46,37 @@ function App() {
   const button = useRef(null);
   const eatenTab = useRef(null);
   const eatTab = useRef(null);
-
+  //!Animation
+  useGSAP(() => {
+    var timeline = gsap.timeline({ duration: 0.5, delay: 0 });
+    timeline.from("#header", {
+      opacity: 0.2,
+      y: "-90%",
+      ease: "elastic",
+    });
+    timeline.from(".nav", {
+      x: "100vw",
+      opacity: 1,
+      delay: "-0.5",
+      stagger: 0.1,
+      ease: "power2.in",
+    });
+    timeline.from(".data", {
+      x: "100vw",
+      opacity: 1,
+      delay: "-0.7",
+      ease: "power2.in",
+    });
+  }, []);
+  useGSAP(() => {
+    if (eaten.eaten.length == 0) return;
+    gsap.from(eatenTab.current, {
+      scale: 0.2,
+      rotate: 20,
+      duration: 0.8,
+      ease: "elastic",
+    });
+  }, [eaten]);
   //!API CALL
   const fetchInfo = () => {
     if (query.trim() == "") return;
@@ -64,10 +97,10 @@ function App() {
           alert("NO MATCH FOUND!");
           return;
         }
-
         setData((prev) => {
           return [...addIconToData(newData.items), ...prev];
         });
+        setSearched((prev) => !prev);
       })
       .catch((error) => console.log(error));
   };
@@ -213,7 +246,10 @@ function App() {
   };
   return (
     <div className="w-screen h-screen">
-      <div className="bg-slate-100 p-2 shadow-xl rounded-md mb-3 mx-3">
+      <div
+        className="bg-slate-100 p-2 shadow-xl rounded-md mb-3 mx-3 "
+        id="header"
+      >
         <h1 className="m-4 sm:text-3xl text-2xl font-thin text-center">
           WHAT IS IN YOUR FOOD🍟
         </h1>
@@ -242,7 +278,7 @@ function App() {
         <NavLink
           className={({ isActive }) =>
             isActive
-              ? "px-2 pt-2  min-w-20 text-center font-bold bg-black rounded-t-lg text-white"
+              ? " nav px-2 pt-2  min-w-20 text-center font-bold bg-black rounded-t-lg text-white"
               : "my-3 p-2 text-center font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
           }
           to={"/"}
@@ -254,7 +290,7 @@ function App() {
           className={({ isActive }) =>
             isActive
               ? "px-2 pt-2 min-w-20 text-center font-bold bg-black rounded-t-lg text-white"
-              : "my-3 p-2  text-center font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
+              : "nav my-3 p-2  text-center font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
           }
           to={"/eaten"}
           ref={eatenTab}
@@ -264,8 +300,8 @@ function App() {
         <NavLink
           className={({ isActive }) =>
             isActive
-              ? "px-2 pt-2 min-w-20 text-center font-bold bg-black rounded-t-lg text-white"
-              : "my-3 p-2  text-center font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
+              ? " px-2 pt-2 min-w-20 text-center font-bold bg-black rounded-t-lg text-white"
+              : " nav my-3 p-2  text-center font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
           }
           to={"/RDA"}
         >
@@ -279,7 +315,7 @@ function App() {
             path="/"
             element={
               <RDAcontext.Provider value={[RDAvalues, setRDAvalue]}>
-                <div className="mx-3 border-gray-400 rounded-lg border-2">
+                <div className="mx-3 border-gray-400 rounded-lg border-2 data overflow-hidden">
                   <Data
                     data={data}
                     eat={addToEaten}
@@ -287,6 +323,7 @@ function App() {
                     remove={rmFromData}
                     load={load}
                     reset={resetData}
+                    searched={searched}
                   />
                 </div>
               </RDAcontext.Provider>
