@@ -27,17 +27,17 @@ function Data(props) {
     { dependencies: [props.searched] }
   );
   useGSAP(() => {
-    if (first.current) {
-      first.current = false;
-      return;
+    if (!first.current && !(home.current === null)) {
+      console.log(first.current);
+      gsap.from(home.current, {
+        height: 1,
+        duration: 0.6,
+        ease: "power1.in",
+      });
     }
-    if (home.current == null) return;
-    gsap.from(home.current, {
-      height: 1,
-      duration: 0.6,
-      ease: "power1.in",
-    });
+    first.current = false;
   }, []);
+
   if (props.data.length == 0) {
     return (
       <div
