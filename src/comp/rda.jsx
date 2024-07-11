@@ -16,13 +16,6 @@ function RDA(props) {
     });
   };
   useGSAP(() => {
-    gsap.from(".rda", {
-      height: 1,
-      duration: 0.6,
-      ease: "power1.in",
-    });
-  }, []);
-  useGSAP(() => {
     gsap.from(".nutrient-group", {
       opacity: 1,
       duration: 0.3,
@@ -33,7 +26,7 @@ function RDA(props) {
     });
   }, []);
   return (
-    <div className="border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col rda overflow-hidden">
+    <div className="border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col">
       <div className="flex p-2 justify-end items-end">
         <p className="mb-4 mr-auto text-2xl font-extrabold text-indigo-950">
           RDA VALUES

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Data from "./comp/Data";
 import Eaten from "./comp/Eaten";
 import { NavLink, Route, Routes } from "react-router-dom";
@@ -7,6 +7,7 @@ import { RDAcontext, RDAdefault } from "./const/RDAcontext";
 import RDA from "./comp/rda";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+
 function App() {
   //!STATES
   const [query, setQuery] = useState("");
@@ -46,37 +47,59 @@ function App() {
   const button = useRef(null);
   const eatenTab = useRef(null);
   const eatTab = useRef(null);
+
   //!Animation
   useGSAP(() => {
     var timeline = gsap.timeline({ duration: 0.5, delay: 0 });
     timeline.from("#header", {
       opacity: 0.2,
+      duration: 1,
       y: "-90%",
       ease: "elastic",
     });
     timeline.from(".nav", {
       x: "-100vw",
       opacity: 1,
-      delay: "-0.5",
+      delay: "-1",
+      stagger: 0.3,
+      ease: "power2.in",
+    });
+    timeline.from(".Container", {
+      x: "-100vw",
+      opacity: 1,
+      delay: "-1.1",
       stagger: 0.1,
       ease: "power2.in",
     });
-    timeline.from(".data", {
-      x: "-100vw",
-      opacity: 1,
-      delay: "-0.7",
-      ease: "power2.in",
-    });
   }, []);
-  useGSAP(() => {
-    if (eaten.eaten.length == 0) return;
-    gsap.from(eatenTab.current, {
-      scale: 0.2,
-      rotate: 20,
-      duration: 0.8,
-      ease: "elastic",
-    });
-  }, [eaten]);
+
+  const { contextSafe } = useGSAP();
+
+  const animateContainer = contextSafe(() => {
+    gsap.fromTo(
+      ".Container",
+      {
+        height: 1,
+      },
+      { height: "auto", duration: 0.5, ease: "power1.in" }
+    );
+  });
+
+  const animateEaten = contextSafe(() => {
+    gsap.fromTo(
+      eatenTab.current,
+      {
+        scale: 0.2,
+        rotate: 30,
+      },
+      {
+        scale: 1,
+        rotate: 0,
+        duration: 1,
+        ease: "elastic",
+      }
+    );
+  });
   //!API CALL
   const fetchInfo = () => {
     if (query.trim() == "") return;
@@ -283,6 +306,7 @@ function App() {
           }
           to={"/"}
           ref={eatTab}
+          onClick={animateContainer}
         >
           EAT MORE
         </NavLink>
@@ -294,6 +318,7 @@ function App() {
           }
           to={"/eaten"}
           ref={eatenTab}
+          onClick={animateContainer}
         >
           EATEN
         </NavLink>
@@ -304,6 +329,7 @@ function App() {
               : " nav my-3 p-2  text-center font-bold rounded-xl bg-black min-w-20 text-white hover:scale-105 focus:scale-105 shadow-md shadow-black"
           }
           to={"/RDA"}
+          onClick={animateContainer}
         >
           CONFIG⚙️
         </NavLink>
@@ -315,10 +341,13 @@ function App() {
             path="/"
             element={
               <RDAcontext.Provider value={[RDAvalues, setRDAvalue]}>
-                <div className="mx-3 border-gray-400 rounded-lg border-2 data overflow-hidden">
+                <div className="mx-3 Container border-gray-400 rounded-lg border-2 overflow-hidden">
                   <Data
                     data={data}
-                    eat={addToEaten}
+                    eat={(n) => {
+                      addToEaten(n);
+                      animateEaten();
+                    }}
                     delete={delFromEaten}
                     remove={rmFromData}
                     load={load}
@@ -333,7 +362,7 @@ function App() {
             path="/eaten"
             element={
               <RDAcontext.Provider value={[RDAvalues, setRDAvalue]}>
-                <div className="mx-3 border-gray-400 rounded-lg border-2">
+                <div className="mx-3 Container border-gray-400 rounded-lg border-2 overflow-hidden">
                   <Eaten
                     key={-1}
                     nutrients={eaten}
@@ -349,7 +378,7 @@ function App() {
             path="/RDA"
             element={
               <RDAcontext.Provider value={[RDAvalues, setRDAvalue]}>
-                <div className="mx-3 border-gray-400 rounded-lg border-2">
+                <div className="mx-3 Container border-gray-400 rounded-lg border-2 overflow-hidden">
                   <RDA save={saveRDA} reset={resetRDA} />
                 </div>
               </RDAcontext.Provider>

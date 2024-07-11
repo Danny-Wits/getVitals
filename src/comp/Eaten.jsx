@@ -11,28 +11,26 @@ function Eaten(props) {
   const n = props.nutrients;
   const total = n["carbohydrates_total_g"] + n["protein_g"] + n["fat_total_g"];
   const [RDA, _] = useContext(RDAcontext);
-  const scrollRef = useRef();
   useGSAP(() => {
-    gsap.from(".eaten", {
-      height: 1,
-      duration: 0.6,
-      ease: "power1.in",
-    });
-  }, []);
-  useGSAP(() => {
-    gsap.from(".nutrient-group", {
-      opacity: 1,
-      duration: 0.3,
-      scale: 0.1,
-      delay: 0.3,
-      borderRadius: "100",
-      ease: "circ",
-    });
+    gsap.fromTo(
+      ".nutrient-group",
+      {
+        scale: 0.1,
+        opacity: 0,
+      },
+      {
+        scale: 1,
+        duration: 0.4,
+        opacity: 1,
+        delay: 0.1,
+        ease: "elastic",
+      }
+    );
   }, [n]);
 
   return (
     <>
-      <div className="border-4 rounded-lg p-3 shadow-lg shadow-black eaten overflow-hidden">
+      <div className="border-4 rounded-lg p-3 shadow-lg shadow-black">
         <div className="flex p-2 justify-evenly items-end">
           <p className="mb-4 mr-auto text-2xl font-extrabold text-indigo-950">
             {n["name"]}

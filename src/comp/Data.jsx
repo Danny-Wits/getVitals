@@ -5,8 +5,6 @@ import gsap from "gsap";
 
 function Data(props) {
   const dataElements = useRef(null);
-  const first = useRef(true);
-  const home = useRef(null);
 
   useGSAP(
     () => {
@@ -19,31 +17,17 @@ function Data(props) {
           duration: 0.75,
           y: "-100vh",
           borderRadius: "100%",
-          delay: key / 4,
+          delay: key / 4 + 0.2,
           ease: "elastic",
         });
       });
     },
     { dependencies: [props.searched] }
   );
-  useGSAP(() => {
-    if (!first.current && !(home.current === null)) {
-      console.log(first.current);
-      gsap.from(home.current, {
-        height: 1,
-        duration: 0.6,
-        ease: "power1.in",
-      });
-    }
-    first.current = false;
-  }, []);
 
   if (props.data.length == 0) {
     return (
-      <div
-        ref={home}
-        className=" border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col overflow-hidden"
-      >
+      <div className=" border-4 rounded-lg p-3 shadow-lg shadow-black flex flex-col overflow-hidden">
         <h2 className="text-black">INTRO</h2>
         <br />
         <p className="text-slate-600 text-justify animate">
