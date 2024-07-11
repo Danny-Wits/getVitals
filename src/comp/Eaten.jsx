@@ -20,10 +20,9 @@ function Eaten(props) {
       },
       {
         scale: 1,
-        duration: 0.4,
+        duration: 0.3,
         opacity: 1,
-        delay: 0.1,
-        ease: "elastic",
+        delay: 0.2,
       }
     );
   }, [n]);
