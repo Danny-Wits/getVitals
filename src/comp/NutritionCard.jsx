@@ -33,13 +33,16 @@ function NutritionCard(props) {
   if (small) {
     return (
       <div className="mx-1 my-4 border-4 rounded-lg p-3 shadow-lg shadow-black">
-        <div className="p-1 flex">
+        <div className="p-1 flex items-center">
           <p
             onClick={() => setSmall((prev) => !prev)}
             className="p-2 mr-auto text-2xl font-semibold text-indigo-950"
           >
             {n.name}
             {n.icon}
+          </p>
+          <p className="p-2 text-xl font-bold text-indigo-950">
+            {n.serving_size_g}G
           </p>
           {props.hasOwnProperty("delete") && (
             <button
