@@ -124,6 +124,9 @@ function NutritionCard(props) {
           {n.name}
           {n.icon}
         </p>
+        <p className="p-2 text-xl font-bold text-indigo-950">
+          {n.serving_size_g}G
+        </p>
         {props.hasOwnProperty("delete") && (
           <button
             className="p-2"
