@@ -59,14 +59,6 @@ function Data(props) {
           <br /> 1 Chicken Biryani
         </p>
         <br />
-        <button
-          className="m-2 p-3  rounded-xl border-black-400 border-2"
-          onClick={props.load}
-        >
-          LOAD Previous MEALS ⚙️
-          <br />
-          <small className="font-thin">only use if visited before</small>
-        </button>
       </div>
     );
   }

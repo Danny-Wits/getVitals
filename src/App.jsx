@@ -2,18 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import Data from "./comp/Data";
 import Eaten from "./comp/Eaten";
 import { NavLink, Route, Routes } from "react-router-dom";
-import Cookies from "js-cookie";
 import { RDAcontext, RDAdefault } from "./const/RDAcontext";
 import RDA from "./comp/rda";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 function App() {
-  //!STATES
-  const [query, setQuery] = useState("");
-  const [data, setData] = useState([]);
-  const [searched, setSearched] = useState(false);
-  const [eaten, setEaten] = useState({
+  //!CONSTs
+  const eatenDefault = {
     name: "EATEN",
     icon: "🍴",
     calories: 0,
@@ -28,25 +24,28 @@ function App() {
     fiber_g: 0,
     sugar_g: 0,
     eaten: [],
-  });
-
-  //!RDA
-  const [RDAvalues, setRDAvalue] = useState(RDAdefault);
-  useEffect(() => {
-    setRDAvalue(loadRDA());
-  }, []);
-  const resetRDA = () => {
-    setRDAvalue({ ...RDAdefault });
   };
-
-  const queryChanged = (event) => {
-    setQuery(event.target.value);
-  };
-
+  //!STATES
+  const [query, setQuery] = useState("");
+  const [data, setData] = useState([]);
+  const [searched, setSearched] = useState(false);
+  const [eaten, setEaten] = useState(eatenDefault);
   //!REFS
   const button = useRef(null);
   const eatenTab = useRef(null);
   const eatTab = useRef(null);
+  //!RDA
+  const [RDAvalues, setRDAvalue] = useState(RDAdefault);
+  const resetRDA = () => {
+    setRDAvalue({ ...RDAdefault });
+  };
+
+  //!onMount😁
+  useEffect(() => {
+    setEaten(load());
+    setRDAvalue(loadRDA());
+    eatTab.current.click();
+  }, []);
 
   //!Animation
   useGSAP(() => {
@@ -71,8 +70,7 @@ function App() {
       stagger: 0.1,
       ease: "power2.in",
     });
-  }, []);
-
+  });
   const { contextSafe } = useGSAP();
 
   const animateContainer = contextSafe(() => {
@@ -227,46 +225,24 @@ function App() {
 
   //!SAVE AND LOAD COOKIES
   const save = () => {
-    let flag = confirm(
-      "DO YOU WANT TO USE BROWSER 🍪COOKIES🍪 TO STORE YOUR MEALS ??? "
-    );
-    if (flag) {
-      Cookies.set("_eaten_", JSON.stringify(eaten), { expires: 2 });
-      alert("SUCCESSFULLY STORED 👍👍👍");
-    } else {
-      alert("OK😭😭😭");
-    }
+    localStorage.setItem("_eaten_", JSON.stringify(eaten));
+    alert("SUCCESSFULLY STORED 👍👍👍");
   };
   const load = () => {
-    let loadedData = Cookies.get("_eaten_");
-    if (loadedData == undefined) {
-      alert(
-        "NO SAVED 🍪COOKIE🍪 FOUND IN THIS BROWSER ...\nTRY THESE FIXES: \n1.PLEASE USE THE BROWSER YOU USED TO SAVE YOUR MEALS\n2.SAVE MEALS IN 'WHAT YOU ATE TAB' "
-      );
-      return;
-    }
-    setEaten(JSON.parse(loadedData));
-    alert("Meals Loaded Successfully");
-    eatenTab.current.click();
-  };
-  const saveRDA = () => {
-    let flag = confirm(
-      "DO YOU WANT TO USE BROWSER 🍪COOKIES🍪 TO STORE YOUR DSA SETTINGS ??? "
-    );
-    if (flag) {
-      Cookies.set("_RDA_", JSON.stringify(RDAvalues), { expires: 30 });
-      alert("SUCCESSFULLY STORED 👍👍👍");
-    } else {
-      alert("OK😭😭😭");
-    }
-  };
-  const loadRDA = () => {
-    let loadedData = Cookies.get("_RDA_");
-    if (loadedData == undefined) {
-      return RDAdefault;
-    }
+    let loadedData = localStorage.getItem("_eaten_");
+    if (loadedData == null) return { ...eatenDefault };
     return JSON.parse(loadedData);
   };
+  const saveRDA = () => {
+    localStorage.setItem("_RDA_", JSON.stringify(RDAvalues));
+    alert("SUCCESSFULLY STORED 👍👍👍");
+  };
+  const loadRDA = () => {
+    let loadedData = localStorage.getItem("_RDA_");
+    if (loadedData == null) return RDAdefault;
+    return JSON.parse(loadedData);
+  };
+
   return (
     <div className="w-screen h-screen">
       <div
@@ -281,7 +257,9 @@ function App() {
             <input
               value={query}
               onKeyDown={keydown}
-              onChange={queryChanged}
+              onChange={(event) => {
+                setQuery(event.target.value);
+              }}
               placeholder="WHAT ARE YOU EATING... "
               className="bg-white p-3 m-0 font-semibold"
               type="text"
@@ -350,7 +328,6 @@ function App() {
                     }}
                     delete={delFromEaten}
                     remove={rmFromData}
-                    load={load}
                     reset={resetData}
                     searched={searched}
                   />

@@ -55,7 +55,7 @@ function NutritionCard(props) {
             </button>
           )}
         </div>
-        <div className="flex justify-left mb-2 items-centre">
+        <div className="flex justify-left mb-2 items-center">
           {props.hasOwnProperty("add") && (
             <button
               className="mx-2 p-2 font-bold rounded-xl bg-black min-w-20 text-white hover:bg-gray-700 focus:scale-105 shadow-md shadow-black"
