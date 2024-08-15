@@ -1,4 +1,4 @@
-A Nutrition and Calories Tracking app with Clean and Colourfull UI :
+A Nutrition and Calories Tracking app with Clean and Colourful UI :
 Visit on : https://getvitals.netlify.app/
 
 Preview : 
